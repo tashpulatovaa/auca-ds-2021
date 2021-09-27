@@ -2,5 +2,5 @@
 
 int main()
 {
-    std::cout << "Hello, gret c++ world!\n";
+    std::cout << "Hello, " << __cplusplus << "!!!\n";
 }
