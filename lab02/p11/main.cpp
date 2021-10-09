@@ -6,70 +6,65 @@ template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
-int getDigit(int num)
-{
-    int result;
-    int sum;
 
-    if (num >= 10)
+long getDigitSum(int num)
+{
+    long sum;
+    while (num != 0)
     {
-        while (num > 9)
-        {
-            sum += num % 10;
-            num = num / 10;
-        }
-        result = getDigit(sum);
+        sum += num % 10;
+        num = num / 10;
     }
-    else
-    {
-        result = num;
-    }
-    return result;
+    return sum;
 }
 
 int main()
 {
     iostream::sync_with_stdio(false);
-    string name1;
-    string name2;
+    string name1, name2;
 
-    while (getline(cin, name1) && getline(cin, name2))
+    while (getline(cin, name1))
     {
-        int n1Length = name1.length(), n2Length = name2.length();
+        getline(cin, name2);
         int sum1, sum2;
 
-        for (int i = 0; i < n1Length; i++)
+        for (int i = 0; i < name1.length(); i++)
         {
             if (isalpha(name1.at(i)))
             {
-                char c = toupper(name1.at(i));
-                sum1 += (name1.at(i) - 'A' + 1);
+                int c = (int)toupper(name1.at(i));
+                sum1 += (c - (int)'A' + 1);
             }
         }
 
-        for (int i = 0; i < n2Length; i++)
+        for (int i = 0; i < name2.length(); i++)
         {
             if (isalpha(name2.at(i)))
             {
-                char c = toupper(name2.at(i));
-                sum2 += (name2.at(i) - 'A' + 1);
+                int c = (int)toupper(name2.at(i));
+                sum2 += (c - (int)'A' + 1);
             }
         }
 
-        int r1 = getDigit(sum1);
-        int r2 = getDigit(sum2);
+        int r1 = 10, r2 = 10;
+        while (r1 >= 10)
+        {
+            r1 = getDigitSum(sum1);
+        }
+        while (r2 >= 10)
+        {
+            r2 = getDigitSum(sum2);
+        }
 
-        double ratio;
+        // int r1 = getDigitSum(sum1);
+        // int r2 = getDigitSum(sum2);
+
         if (r1 > r2)
         {
-            ratio = (double)r1 / (double)r2;
-        }
-        else
-        {
-            ratio = (double)r2 / (double)r1;
+            swap(r1, r2);
         }
 
-        cout << fixed;
-        cout << setprecision(2) << ratio * 100.00 << "%" << endl;
+        double result = (double)r1 / (double)r2 * 100;
+        cout << fixed << setprecision(2) << result << "%" << endl;
     }
 }

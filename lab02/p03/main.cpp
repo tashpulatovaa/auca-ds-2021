@@ -17,11 +17,11 @@ int main()
         cin >> column;
         cin >> row;
 
-        column--;
-        row--;
+        column -= 2;
+        row -= 2;
 
-        int nOfLocatorsC = column / 3 + (column % 2 != 0);
-        int nOfLocatorsR = row / 3 + (row % 2 != 0);
+        int nOfLocatorsC = column / 3 + (column % 3 != 0);
+        int nOfLocatorsR = row / 3 + (row % 3 != 0);
 
         cout << nOfLocatorsC * nOfLocatorsR << "\n";
     }

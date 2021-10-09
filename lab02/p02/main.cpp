@@ -5,8 +5,6 @@ int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
 
-//time limit
-
 int main()
 {
     iostream::sync_with_stdio(false);
@@ -17,22 +15,11 @@ int main()
 
     for (int i = 0; i < testCases; i++)
     {
-        int nOfWarriors;
+        long long nOfWarriors;
         cin >> nOfWarriors;
 
-        int counter = 0;
-        int sum = 0;
-        int rows = 0;
+        long long l = (long long)floor(sqrt(2.0 * nOfWarriors + 0.25) + 0.5) - 1;
 
-        while (sum <= nOfWarriors)
-        {
-            rows++;
-            counter++;
-            for (int j = 0; j < counter; j++)
-            {
-                sum++;
-            }
-        }
-        cout << rows - 1 << "\n";
+        cout << l << "\n";
     }
 }
