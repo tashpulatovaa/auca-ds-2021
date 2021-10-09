@@ -7,7 +7,8 @@ using namespace std;
 int main()
 {
     const int kNameWidth = 30;
-    const int kAvgWidht = 40;
+    const int kAvgWidht =
+        40;
 
     cout << setfill('.') << fixed;
     for (string name; cin >> name;)
