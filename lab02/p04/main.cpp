@@ -9,12 +9,17 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    string name1;
-    cin >> name1;
-    char c;
-    for (int i = 0; i < name1.length(); i++)
+    int testCases;
+    cin >> testCases;
+
+    for (int test = 0; test < testCases; test++)
     {
-        c = toupper(name1.at(i));
-        cout << c << "\n";
+        long n;
+        cin >> n;
+
+        long r = abs((((((n * 567) / 9) + 7492) * 235) / 47) - 498);
+        int result = (int)(r % 100) / 10;
+
+        cout << result << "\n";
     }
 }
