@@ -1,0 +1,3 @@
+hello
+palindrome
+Mr. Owl ate my metal worm
