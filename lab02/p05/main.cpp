@@ -9,11 +9,16 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int a;
-    cin >> a;
+    //int n1, n2;
+    int c = 1;
 
-    int b;
-    cin >> b;
-
-    cout << a + b << "\n";
+    for (int n1, n2; cin >> n1 && n1 != 0 && cin >> n2 && n2 != 0;)
+    {
+        --n1;
+        cout << "Case " << c++ << ": ";
+        if (n1 / n2 > 26)
+            cout << "impossible\n";
+        else
+            cout << n1 / n2 << '\n';
+    }
 }
