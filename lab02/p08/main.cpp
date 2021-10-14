@@ -9,11 +9,20 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int a;
-    cin >> a;
+    int counter = 0;
 
-    int b;
-    cin >> b;
+    for (char c; cin >> c;)
+    {
+        //cout << (c != '"') ? c : ((counter % 2 == 0) ? "``" : "''");
 
-    cout << a + b << "\n";
+        if (c == '"')
+        {
+            counter++;
+            cout << (counter % 2 == 0) ? '8' : '9';
+        }
+        else
+        {
+            cout << c;
+        }
+    }
 }
