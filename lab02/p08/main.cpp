@@ -18,7 +18,7 @@ int main()
         if (c == '"')
         {
             counter++;
-            cout << (counter % 2 == 0) ? '8' : '9';
+            cout << (counter % 2 == 0) ? "''" : "``";
         }
         else
         {
