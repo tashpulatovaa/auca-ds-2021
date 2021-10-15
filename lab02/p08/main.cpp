@@ -10,19 +10,55 @@ int main()
     iostream::sync_with_stdio(false);
 
     int counter = 0;
+    char ch;
 
-    for (char c; cin >> c;)
+    while (cin.get(ch))
     {
-        //cout << (c != '"') ? c : ((counter % 2 == 0) ? "``" : "''");
-
-        if (c == '"')
+        if (ch == '"')
         {
             counter++;
-            cout << (counter % 2 == 0) ? "''" : "``";
+            if (counter % 2 == 0)
+            {
+                cout << "''";
+            }
+            else if (counter % 2 == 1)
+            {
+                cout << "``";
+            }
+        }
+        else if (ch == 32)
+        {
+            cout << " ";
         }
         else
         {
-            cout << c;
+            cout.put(ch);
         }
     }
+    cout << "\n";
+
+    // for (char ch; cin >> ch; ch != 1)
+    // {
+    //     if (ch == '"')
+    //     {
+    //         counter++;
+    //         if (counter % 2 == 0)
+    //         {
+    //             cout << "''";
+    //         }
+    //         else if (counter % 2 == 1)
+    //         {
+    //             cout << "``";
+    //         }
+    //     }
+    //     else if (ch == 32)
+    //     {
+    //         cout << " ";
+    //     }
+    //     else
+    //     {
+    //         cout << ch;
+    //     }
+    // }
+    // cout << "\n";
 }
