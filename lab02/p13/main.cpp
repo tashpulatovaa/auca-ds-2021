@@ -9,11 +9,56 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int a;
-    cin >> a;
+    int nOfBanks, nOfdebartures;
+    while (1)
+    {
+        cin >> nOfBanks;
+        cin >> nOfdebartures;
+        if (nOfBanks == 0 && nOfdebartures == 0)
+            break;
 
-    int b;
-    cin >> b;
+        vector<int> banks(nOfBanks);
+        vector<int> debatures(nOfdebartures);
+        vector<int> inReserve(nOfBanks);
 
-    cout << a + b << "\n";
+        for (int i = 0; i < nOfBanks; i++)
+        {
+            banks[i] = i;
+        }
+
+        for (int i = 0; i < nOfBanks; i++)
+        {
+            int c;
+            cin >> c;
+            inReserve[i] = c;
+        }
+
+        bool can = true;
+        for (int j = 0; j < nOfdebartures; j++)
+        {
+            int debtor, creditor, val;
+
+            cin >> debtor;
+            cin >> creditor;
+            cin >> val;
+
+            inReserve[creditor - 1] += val;
+
+            if (inReserve[debtor - 1] - val < 0)
+            {
+                can = false;
+            }
+        }
+        if (can)
+        {
+            cout << "S"
+                 << "\n";
+        }
+        else
+        {
+            cout << "N"
+                 << "\n";
+        }
+        can = true;
+    }
 }
