@@ -35,30 +35,4 @@ int main()
             cout.put(ch);
         }
     }
-    cout << "\n";
-
-    // for (char ch; cin >> ch; ch != 1)
-    // {
-    //     if (ch == '"')
-    //     {
-    //         counter++;
-    //         if (counter % 2 == 0)
-    //         {
-    //             cout << "''";
-    //         }
-    //         else if (counter % 2 == 1)
-    //         {
-    //             cout << "``";
-    //         }
-    //     }
-    //     else if (ch == 32)
-    //     {
-    //         cout << " ";
-    //     }
-    //     else
-    //     {
-    //         cout << ch;
-    //     }
-    // }
-    // cout << "\n";
 }
