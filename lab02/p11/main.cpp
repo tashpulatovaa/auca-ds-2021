@@ -1,19 +1,31 @@
 #include <bits/stdc++.h>
 
-// FIX BUGS
-
 template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
 
-long getDigitSum(int num)
+int sumOfDigits(int n)
 {
-    long sum;
-    while (num != 0)
+    int sum = 0;
+    while (n != 0)
     {
-        sum += num % 10;
-        num = num / 10;
+        sum += n % 10;
+        n = n / 10;
+    }
+
+    return sum;
+}
+
+int sumOfLetters(const string &s)
+{
+    int sum = 0;
+    for (char const ch : s)
+    {
+        if (isalpha(ch))
+        {
+            sum += toupper(ch) + 1 - 'A';
+        }
     }
     return sum;
 }
@@ -21,50 +33,27 @@ long getDigitSum(int num)
 int main()
 {
     iostream::sync_with_stdio(false);
-    string name1, name2;
 
+    string name1;
     while (getline(cin, name1))
     {
+        string name2;
         getline(cin, name2);
-        int sum1, sum2;
 
-        for (int i = 0; i < name1.length(); i++)
+        int n1 = sumOfLetters(name1);
+        while (n1 >= 10)
         {
-            if (isalpha(name1.at(i)))
-            {
-                int c = (int)toupper(name1.at(i));
-                sum1 += (c - (int)'A' + 1);
-            }
+            n1 = sumOfDigits(n1);
         }
 
-        for (int i = 0; i < name2.length(); i++)
+        int n2 = sumOfLetters(name2);
+        while (n2 >= 10)
         {
-            if (isalpha(name2.at(i)))
-            {
-                int c = (int)toupper(name2.at(i));
-                sum2 += (c - (int)'A' + 1);
-            }
+            n2 = sumOfDigits(n2);
         }
 
-        int r1 = 10, r2 = 10;
-        while (r1 >= 10)
-        {
-            r1 = getDigitSum(sum1);
-        }
-        while (r2 >= 10)
-        {
-            r2 = getDigitSum(sum2);
-        }
+        double d = min(n1, n2) * 100.00 / max(n1, n2);
 
-        // int r1 = getDigitSum(sum1);
-        // int r2 = getDigitSum(sum2);
-
-        if (r1 > r2)
-        {
-            swap(r1, r2);
-        }
-
-        double result = (double)r1 / (double)r2 * 100;
-        cout << fixed << setprecision(2) << result << "%" << endl;
+        cout << fixed << setprecision(2) << d << " %" << endl;
     }
 }
