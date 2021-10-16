@@ -13,13 +13,13 @@ int main()
     cin >> h >> w;
 
     int countSlashes = 0;
-    vector<vector<char>> v(h, vector<char>(w));
+    char table[h][w];
 
     for (int i = 0; i < h; i++)
     {
         for (int j = 0; j < w; j++)
         {
-            cin >> v[i][j];
+            cin >> table[i][j];
         }
     }
 
@@ -27,7 +27,7 @@ int main()
     {
         for (int j = 0; j < w; j++)
         {
-            char c = v[i][j];
+            char c = table[i][j];
             if (c == 47 || c == 92)
             {
                 countSlashes++;
@@ -37,15 +37,15 @@ int main()
                 bool left = false, right = false, up = false, down = false;
                 for (int k = 0; k < j; k++)
                 {
-                    if (v[h][k] == 47 || (v[h][k] == 92))
+                    if (table[i][k] == 47 || (table[i][k] == 92))
                     {
                         left = true;
                         break;
                     }
                 }
-                for (int k = j; k < sz(v[0]); k++)
+                for (int k = j; k < w; k++)
                 {
-                    if (v[h][k] == 47 || (v[h][k] == 92))
+                    if (table[i][k] == 47 || (table[i][k] == 92))
                     {
                         right = true;
                         break;
@@ -53,15 +53,15 @@ int main()
                 }
                 for (int k = 0; k < i; k++)
                 {
-                    if (v[k][j] == 47 || (v[k][j] == 92))
+                    if (table[k][j] == 47 || (table[k][j] == 92))
                     {
                         up = true;
                         break;
                     }
                 }
-                for (int k = h; k < sz(v); k++)
+                for (int k = i; k < h; k++)
                 {
-                    if (v[k][j] == 47 || (v[k][j] == 92))
+                    if (table[k][j] == 47 || (table[k][j] == 92))
                     {
                         down = true;
                         break;
