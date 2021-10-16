@@ -18,6 +18,7 @@ int main()
             break;
 
         vector<int> inReserve(nOfBanks + 5);
+        int debtor, creditor, val;
 
         for (int i = 1; i <= nOfBanks; i++)
         {
@@ -26,22 +27,24 @@ int main()
             inReserve[i] = c;
         }
 
-        bool can = true;
         for (int j = 1; j <= nOfdebartures; j++)
         {
-            int debtor, creditor, val;
-
             cin >> debtor >> creditor >> val;
 
             inReserve[debtor] -= val;
             inReserve[creditor] += val;
+        }
 
-            if (inReserve[debtor] < 0)
+        bool can = true;
+        for (int j = 1; j <= nOfBanks; j++)
+        {
+            if (inReserve[j] < 0)
             {
                 can = false;
                 break;
             }
         }
+
         if (can)
         {
             cout << "S" << endl;
