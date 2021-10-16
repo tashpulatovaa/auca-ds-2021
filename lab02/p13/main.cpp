@@ -17,16 +17,9 @@ int main()
         if (nOfBanks == 0 && nOfdebartures == 0)
             break;
 
-        vector<int> banks(nOfBanks);
-        vector<int> debatures(nOfdebartures);
-        vector<int> inReserve(nOfBanks);
+        vector<int> inReserve(nOfBanks + 5);
 
-        for (int i = 0; i < nOfBanks; i++)
-        {
-            banks[i] = i;
-        }
-
-        for (int i = 0; i < nOfBanks; i++)
+        for (int i = 1; i <= nOfBanks; i++)
         {
             int c;
             cin >> c;
@@ -34,31 +27,28 @@ int main()
         }
 
         bool can = true;
-        for (int j = 0; j < nOfdebartures; j++)
+        for (int j = 1; j <= nOfdebartures; j++)
         {
             int debtor, creditor, val;
 
-            cin >> debtor;
-            cin >> creditor;
-            cin >> val;
+            cin >> debtor >> creditor >> val;
 
-            inReserve[creditor - 1] += val;
+            inReserve[debtor] -= val;
+            inReserve[creditor] += val;
 
-            if (inReserve[debtor - 1] - val < 0)
+            if (inReserve[debtor] < 0)
             {
                 can = false;
+                break;
             }
         }
         if (can)
         {
-            cout << "S"
-                 << "\n";
+            cout << "S" << endl;
         }
         else
         {
-            cout << "N"
-                 << "\n";
+            cout << "N" << endl;
         }
-        can = true;
     }
 }
