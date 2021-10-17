@@ -9,14 +9,9 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    for (int h; cin >> h;)
+    int h, w;
+    while (cin >> h >> w)
     {
-        int w;
-        cin >> w;
-
-        if (w == 0 && h == 0)
-            break;
-
         int countSlashes = 0;
         char table[h][w];
 
