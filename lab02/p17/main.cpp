@@ -9,73 +9,42 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int h, w;
+    int h = 0;
+    int w = 0;
+
     while (cin >> h >> w)
     {
-        int countSlashes = 0;
-        char table[h][w];
+        char ch[h][w];
 
         for (int i = 0; i < h; i++)
         {
             for (int j = 0; j < w; j++)
             {
-                cin >> table[i][j];
+                cin >> ch[i][j];
             }
         }
 
+        int nOfSlashes = 0;
+        int r = 0;
+
         for (int i = 0; i < h; i++)
         {
             for (int j = 0; j < w; j++)
             {
-                char c = table[i][j];
-                if (c == 47 || c == 92)
+                if (ch[i][j] == '.')
                 {
-                    countSlashes++;
+                    if (nOfSlashes % 2 != 0)
+                    {
+                        ++r;
+                    }
                 }
                 else
                 {
-                    bool left = false, right = false, up = false, down = false;
-                    for (int k = 0; k < j; k++)
-                    {
-                        if (table[i][k] == 47 || (table[i][k] == 92))
-                        {
-                            left = true;
-                            break;
-                        }
-                    }
-                    for (int k = j; k < w; k++)
-                    {
-                        if (table[i][k] == 47 || (table[i][k] == 92))
-                        {
-                            right = true;
-                            break;
-                        }
-                    }
-                    for (int k = 0; k < i; k++)
-                    {
-                        if (table[k][j] == 47 || (table[k][j] == 92))
-                        {
-                            up = true;
-                            break;
-                        }
-                    }
-                    for (int k = i; k < h; k++)
-                    {
-                        if (table[k][j] == 47 || (table[k][j] == 92))
-                        {
-                            down = true;
-                            break;
-                        }
-                    }
-                    if (left && right && up && down)
-                    {
-                        countSlashes += 2;
-                    }
+                    ++nOfSlashes;
                 }
             }
         }
-
-        //cout << (countSlashes % 2 == 0) ? countSlashes / 2 : countSlashes / 2 + 0.5;
-        cout << countSlashes / 2 << "\n";
+        r += nOfSlashes / 2;
+        cout << r << "\n";
     }
 }
