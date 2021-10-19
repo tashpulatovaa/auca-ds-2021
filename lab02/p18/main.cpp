@@ -9,47 +9,67 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    for (int nOfCourses; cin >> nOfCourses; nOfCourses != 0)
+    // for (int nOfCourses; cin >> nOfCourses; nOfCourses != 0)
+    while (1)
     {
-        int nOfCategories;
-        cin >> nOfCategories;
-
-        int courses[nOfCourses];
-
-        bool fulfill = true;
-        for (int i = 0; i < nOfCategories; i++)
+        int nOfCourses;
+        cin >> nOfCourses;
+        if (nOfCourses == 0)
         {
-            int nOfCoursesInCategory, minNumOfCategory;
-            cin >> nOfCoursesInCategory >> minNumOfCategory;
-            int nOfSimilarNums = 0;
-
-            //vector<int> coursesOfCategory;
-            for (int j = 0; j < nOfCoursesInCategory; j++)
-            {
-                int course;
-                cin >> course;
-                // coursesOfCategory.push_back(course);
-                int *end = courses + sizeof(courses);
-                if (find(courses, end, course))
-                {
-                    nOfSimilarNums++;
-                }
-            }
-
-            if (nOfSimilarNums < minNumOfCategory)
-            {
-                fulfill = false;
-                break;
-            }
-        }
-
-        if (fulfill)
-        {
-            cout << "yes\n";
+            break;
         }
         else
         {
-            cout << "no\n";
+            int nOfCategories;
+            cin >> nOfCategories;
+
+            int courses[nOfCourses];
+
+            for (int i = 0; i < nOfCourses; i++)
+            {
+                int n;
+                cin >> n;
+                courses[i] = n;
+            }
+
+            bool fulfill = true;
+            for (int i = 0; i < nOfCategories; ++i)
+            {
+                int nOfCoursesInCategory, minNumOfCategory;
+                cin >> nOfCoursesInCategory >> minNumOfCategory;
+                int nOfSimilarNums = 0;
+
+                //vector<int> coursesOfCategory;
+                for (int j = 0; j < nOfCoursesInCategory; j++)
+                {
+                    int course;
+                    cin >> course;
+                    // coursesOfCategory.push_back(course);
+                    for (int k = 0; k < nOfCourses; k++)
+                    {
+                        if (course == courses[k])
+                        {
+                            nOfSimilarNums++;
+                            break;
+                        }
+                    }
+                }
+
+                if (nOfSimilarNums < minNumOfCategory)
+                {
+                    fulfill = false;
+                    break;
+                }
+            }
+
+            if (fulfill)
+            {
+                cout << "yes\n";
+            }
+            else
+            {
+                cout << "no\n";
+            }
         }
     }
 }
