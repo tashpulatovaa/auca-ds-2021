@@ -9,7 +9,6 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    // for (int nOfCourses; cin >> nOfCourses; nOfCourses != 0)
     while (1)
     {
         int nOfCourses;
@@ -39,12 +38,10 @@ int main()
                 cin >> nOfCoursesInCategory >> minNumOfCategory;
                 int nOfSimilarNums = 0;
 
-                //vector<int> coursesOfCategory;
                 for (int j = 0; j < nOfCoursesInCategory; j++)
                 {
                     int course;
                     cin >> course;
-                    // coursesOfCategory.push_back(course);
                     for (int k = 0; k < nOfCourses; k++)
                     {
                         if (course == allCourses[k])
