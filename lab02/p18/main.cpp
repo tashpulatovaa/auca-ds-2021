@@ -23,13 +23,13 @@ int main()
             int nOfCategories;
             cin >> nOfCategories;
 
-            int courses[nOfCourses];
+            int allCourses[nOfCourses];
 
             for (int i = 0; i < nOfCourses; i++)
             {
                 int n;
                 cin >> n;
-                courses[i] = n;
+                allCourses[i] = n;
             }
 
             bool fulfill = true;
@@ -47,7 +47,7 @@ int main()
                     // coursesOfCategory.push_back(course);
                     for (int k = 0; k < nOfCourses; k++)
                     {
-                        if (course == courses[k])
+                        if (course == allCourses[k])
                         {
                             nOfSimilarNums++;
                             break;
@@ -58,7 +58,6 @@ int main()
                 if (nOfSimilarNums < minNumOfCategory)
                 {
                     fulfill = false;
-                    break;
                 }
             }
 
