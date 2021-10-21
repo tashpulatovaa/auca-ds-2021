@@ -15,29 +15,77 @@ int main()
 
     for (int test = 0; test < tests; test++)
     {
-        vector<string> pieces;
 
         bool loop = true;
 
+        string s;
+        int counter = 0;
+        getline(cin, s);
+        if (sz(s) < 4)
         {
-            string s;
-            cin >> s;
-
-            getline(cin, s);
-
+            loop = false;
+        }
+        else
+        {
+            vector<char> pieces(s.begin(), s.end());
             for (int i = 0; i < sz(pieces); i++)
             {
-                if (i != sz(pieces) - 1 && pieces[i].at(1) == pieces[i + 1].at(0))
-                    loop = false;
+                if (pieces[i] == 'M')
+                {
+                    counter++;
+                }
+                else if (pieces[i] == 'F')
+                {
+                    counter--;
+                }
             }
 
-            if (loop)
+            if (counter == 0)
             {
-                cout << "LOOP\n";
+                loop = true;
             }
             else
             {
-                cout << "NO LOOP\n";
+                loop = false;
             }
         }
+
+        // for (int i = 0; i < sz(pieces); i++)
+        // {
+        //     char end;
+        //     if (pieces[i] == 'M' || pieces[i] == 'F')
+        //     {
+        //         counter++;
+        //         if (counter % 2 == 0)
+        //         {
+        //             end = pieces[i];
+        //         }
+        //         else
+        //         {
+        //             if (i != 0 && end == pieces[i])
+        //             {
+        //                 loop = false;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+        // if (loop)
+        // {
+        //     cout << "LOOP\n";
+        // }
+        // else
+        // {
+        //     cout << "NO LOOP\n";
+        // }
+
+        if (loop)
+        {
+            cout << "LOOP\n";
+        }
+        else
+        {
+            cout << "NO LOOP\n";
+        }
     }
+}
