@@ -50,35 +50,6 @@ int main()
             }
         }
 
-        // for (int i = 0; i < sz(pieces); i++)
-        // {
-        //     char end;
-        //     if (pieces[i] == 'M' || pieces[i] == 'F')
-        //     {
-        //         counter++;
-        //         if (counter % 2 == 0)
-        //         {
-        //             end = pieces[i];
-        //         }
-        //         else
-        //         {
-        //             if (i != 0 && end == pieces[i])
-        //             {
-        //                 loop = false;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-        // if (loop)
-        // {
-        //     cout << "LOOP\n";
-        // }
-        // else
-        // {
-        //     cout << "NO LOOP\n";
-        // }
-
         if (loop)
         {
             cout << "LOOP\n";
