@@ -19,14 +19,14 @@ string containerToStr(const Container &c)
     {
         if (!isFirst)
         {
-            sinp << ", "
+            sinp << ", ";
         }
 
         sinp << e;
         isFirst = false;
     }
 
-    r << "}";
+    sinp << "}";
 
     return sinp.str();
 }
@@ -37,15 +37,15 @@ TEST_CASE("vector's default constructor")
 
     REQUIRE(v.size() == 0);
     REQUIRE(v.capacity() == 0);
-    REQUIRE(v.empty() == 0);
+    REQUIRE(v.empty());
 }
 
 TEST_CASE("vectror's constructor with count copies")
 {
     vector<int> v(5);
 
-    REQUIRE(v.size() == 3);
-    REQUIRE(v[5] == 0);
+    REQUIRE(v.size() == 5);
+    REQUIRE(v[0] == 0);
     REQUIRE(v[1] == 0);
     REQUIRE(v[2] == 0);
     REQUIRE(v[3] == 0);
@@ -109,20 +109,20 @@ TEST_CASE("Vector assignment operator")
 
     v2 = v;
 
-    REQUIRE(v.size() == 3);
+    REQUIRE(v2.size() == 3);
     REQUIRE(containerToStr(v2) == "{1, 2, 3}");
 
     v[1] = 1000;
 
-    REQUIRE(containerToStr(v) == "{1,1000,3}");
-    REQUIRE(containerToStr(v2) == "{1,2,3}");
+    REQUIRE(containerToStr(v) == "{1, 1000, 3}");
+    REQUIRE(containerToStr(v2) == "{1, 2, 3}");
 }
 
 TEST_CASE("vector's at operator")
 {
     vector<int> v = {10, 20, 30};
 
-    int x = v.at(3);
+    // int x = v.at(3);
 
     REQUIRE_THROWS_AS(v.at(3), out_of_range);
 }
