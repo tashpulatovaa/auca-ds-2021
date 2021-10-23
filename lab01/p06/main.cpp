@@ -40,7 +40,7 @@ TEST_CASE("vector's default constructor")
     REQUIRE(v.empty());
 }
 
-TEST_CASE("vectror's constructor with count copies")
+TEST_CASE("vectror's constructor with size")
 {
     vector<int> v(5);
 
@@ -57,7 +57,10 @@ TEST_CASE("vectror's constructor with count copies")
     REQUIRE(v2[0].empty());
     REQUIRE(v2[1].empty());
     REQUIRE(v2[2].empty());
+}
 
+TEST_CASE("vectror's constructor with size and initial value")
+{
     vector<int> v3(3, 42);
 
     REQUIRE(v3.size() == 3);
@@ -122,7 +125,29 @@ TEST_CASE("vector's at operator")
 {
     vector<int> v = {10, 20, 30};
 
-    // int x = v.at(3);
-
     REQUIRE_THROWS_AS(v.at(3), out_of_range);
+}
+
+TEST_CASE("vector's reverse operator")
+{
+    vector<int> v = {1, 2, 3};
+    std::reverse(v.begin(), v.end());
+
+    REQUIRE(containerToStr(v) == "{3, 2, 1}");
+}
+
+TEST_CASE("vector's sort operator")
+{
+    vector<int> v = {5, 2, 3};
+    std::sort(v.begin(), v.end());
+
+    REQUIRE(containerToStr(v) == "{2, 3, 5}");
+}
+
+TEST_CASE("Vector's binary search algorithm")
+{
+    vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    bool exists = std::binary_search(v.begin(), v.end(), 9);
+
+    REQUIRE(exists == true);
 }
