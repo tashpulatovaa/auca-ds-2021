@@ -50,7 +50,6 @@ int main()
      goodSwap01(&x, &y);
      cout << "After swap x = " << x << ", b = " << y << "\n";
 
-
      cout << "goodSwap02:\n";
      cout << "Before swap x = " << x << ", b = " << y << "\n";
      goodSwap02(x, y);
@@ -68,5 +67,5 @@ int main()
      string s2 = "World";
      cout << "Before swap s1 = " << s1 << ", s2 = " << s2 << "\n";
      auSwap(s1, s2);
-     cout << "After swap s1 = " << s1 << ", s2 = " << s2 << "\n";    
+     cout << "After swap s1 = " << s1 << ", s2 = " << s2 << "\n";
 }
