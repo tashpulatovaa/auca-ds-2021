@@ -4,14 +4,13 @@ template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
-const int START = 1;
+
 int main()
 {
     iostream::sync_with_stdio(false);
 
     int start, height, end;
     vector<int> heights(10000);
-
     int largeEnd = 0;
 
     while (cin >> start >> height >> end)
@@ -34,7 +33,7 @@ int main()
     {
         if (best != heights[j])
         {
-            cout << ' ' << ' ' << heights[j];
+            cout << ' ' << j << ' ' << heights[j];
             best = heights[j];
         }
     }
