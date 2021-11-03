@@ -9,11 +9,35 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int a;
-    cin >> a;
+    int testCases;
+    cin >> testCases;
 
-    int b;
-    cin >> b;
+    for (int test = 0; test < testCases; test++)
+    {
+        int nOfDigits;
+        cin >> nOfDigits;
+        vector<int> nums(nOfDigits);
+        for (int i = 0; i < nOfDigits; i++)
+        {
+            int x;
+            cin >> x;
+            nums[i] = x;
+        }
 
-    cout << a + b << "\n";
+        int resultSum = 0;
+        for (int i = 1; i < nOfDigits; i++)
+        {
+            int sum = 0;
+            for (int j = 0; j < i; j++)
+            {
+                if (nums[i] > nums[j] || nums[i] == nums[j])
+                {
+                    sum++;
+                }
+            }
+            resultSum += sum;
+        }
+
+        cout << resultSum << "\n";
+    }
 }
