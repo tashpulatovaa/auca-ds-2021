@@ -83,21 +83,17 @@ bool applyMoves(vector<string> &puzzle, const string &moves)
         int row = emptyRow;
         int col = emptyCol;
         if (m == 'A')
-        {
             row = emptyRow - 1;
-        }
+
         else if (m == 'B')
-        {
             row = emptyRow + 1;
-        }
+
         else if (m == 'L')
-        {
             col = emptyCol - 1;
-        }
+
         else if (m == 'R')
-        {
             col = emptyCol + 1;
-        }
+
         if (0 <= row && row < 5 && 0 <= col && col < 5)
         {
             swap(puzzle[emptyRow][emptyCol], puzzle[row][col]);
