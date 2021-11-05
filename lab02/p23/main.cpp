@@ -9,11 +9,59 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    int a;
-    cin >> a;
+    for (string bottom; getline(cin, bottom) && !bottom.empty();)
+    {
+        string top;
+        getline(cin, top);
 
-    int b;
-    cin >> b;
+        bool suits = false;
+        int counter = 0;
+        int result = 0;
+        if (sz(bottom) < sz(top))
+        {
+            swap(bottom, top);
+        }
 
-    cout << a + b << "\n";
+        while (!suits)
+        {
+            for (int i = 0; i < sz(bottom); i++)
+            {
+                if (counter + sz(top) == sz(bottom))
+                {
+                    suits = true;
+                    break;
+                }
+                if (counter > sz(bottom) - sz(top) && counter + sz(top) != sz(bottom))
+                {
+                    if (i + counter > sz(bottom) - 1)
+                    {
+                        continue;
+                    }
+                }
+                if (!(bottom[i + counter] == top[i] && bottom[i + counter] == 2))
+                {
+                    suits = true;
+                    break;
+                }
+            }
+            counter++;
+        }
+        if (suits)
+        {
+            if (counter + sz(top) == sz(bottom))
+            {
+                result = sz(bottom) + sz(top);
+            }
+            else if (counter > sz(bottom) - sz(top))
+            {
+                result = sz(bottom) + (sz(top) + counter - sz(bottom));
+            }
+            else
+            {
+                result = sz(bottom);
+            }
+        }
+
+        cout << result << "\n";
+    }
 }
