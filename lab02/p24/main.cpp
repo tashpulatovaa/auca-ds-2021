@@ -27,16 +27,16 @@ int main()
         }
 
         int minDis;
-        for (int i = 1; i <= *max_element(addresses.begin(), addresses.end()); i++)
+        for (int i = 0; i < nOfRelatives; i++)
         {
             int sum = 0;
             for (int j = 0; j < nOfRelatives; j++)
             {
-                if (i == addresses[j])
+                if (addresses[i] == addresses[j])
                     continue;
-                sum += findDistance(i, addresses[j]);
+                sum += findDistance(addresses[i], addresses[j]);
             }
-            if (i == 1)
+            if (i == 0)
             {
                 minDis = sum;
             }
