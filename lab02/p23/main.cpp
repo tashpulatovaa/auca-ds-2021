@@ -12,6 +12,7 @@ int main()
     string top, bottom;
     while (cin >> top >> bottom)
     {
+
         int bottomIndex = 0;
         bool match = false;
         for (; bottomIndex < sz(bottom); ++bottomIndex)
@@ -37,7 +38,9 @@ int main()
         match = false;
         for (; topIndex < sz(top); ++topIndex)
         {
+
             int i = topIndex, j = 0;
+
             for (; i < sz(top) && j < sz(bottom); ++i, ++j)
             {
                 if (top[i] == '2' && bottom[j] == '2')
