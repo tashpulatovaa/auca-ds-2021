@@ -9,59 +9,67 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    for (string bottom; getline(cin, bottom) && !bottom.empty();)
+    string top, bottom;
+    while (cin >> top >> bottom)
     {
-        string top;
-        getline(cin, top);
-
-        bool suits = false;
-        int counter = 0;
-        int result = 0;
-        if (sz(bottom) < sz(top))
+        int bottomIndex = 0;
+        bool match = false;
+        for (; bottomIndex < sz(bottom); ++bottomIndex)
         {
-            swap(bottom, top);
-        }
-
-        while (!suits)
-        {
-            for (int i = 0; i < sz(bottom); i++)
+            int i = bottomIndex, j = 0;
+            for (; i < sz(bottom) && j < sz(top); ++i, ++j)
             {
-                if (counter + sz(top) == sz(bottom))
+                if (bottom[i] == '2' && top[j] == '2')
                 {
-                    suits = true;
+                    match = false;
                     break;
                 }
-                if (counter > sz(bottom) - sz(top) && counter + sz(top) != sz(bottom))
+                else
                 {
-                    if (i + counter > sz(bottom) - 1)
-                    {
-                        continue;
-                    }
-                }
-                if (!(bottom[i + counter] == top[i] && bottom[i + counter] == 2))
-                {
-                    suits = true;
-                    break;
+                    match = true;
                 }
             }
-            counter++;
-        }
-        if (suits)
-        {
-            if (counter + sz(top) == sz(bottom))
-            {
-                result = sz(bottom) + sz(top);
-            }
-            else if (counter > sz(bottom) - sz(top))
-            {
-                result = sz(bottom) + (sz(top) + counter - sz(bottom));
-            }
-            else
-            {
-                result = sz(bottom);
-            }
+            if (match)
+                break;
         }
 
-        cout << result << "\n";
+        int topIndex = 0;
+        match = false;
+        for (; topIndex < sz(top); ++topIndex)
+        {
+            int i = topIndex, j = 0;
+            for (; i < sz(top) && j < sz(bottom); ++i, ++j)
+            {
+                if (top[i] == '2' && bottom[j] == '2')
+                {
+                    match = false;
+                    break;
+                }
+                else
+                {
+                    match = true;
+                }
+            }
+            if (match)
+                break;
+        }
+
+        if (sz(top) + bottomIndex >= sz(bottom) && sz(bottom) + topIndex >= sz(top))
+        {
+            cout << min(sz(top) + bottomIndex, sz(bottom) + topIndex) << endl;
+        }
+        else if (sz(top) + bottomIndex <= sz(bottom) && sz(bottom) + topIndex >= sz(top))
+        {
+            cout << min(sz(bottom), sz(bottom) + topIndex) << endl;
+        }
+
+        else if (sz(top) + bottomIndex <= sz(bottom) && sz(bottom) + topIndex <= sz(top))
+        {
+            cout << min(sz(bottom), sz(top)) << endl;
+        }
+        else if (sz(top) + bottomIndex >= sz(bottom) && sz(bottom) + topIndex <= sz(top))
+        {
+            cout << min(sz(top) + bottomIndex, sz(top)) << endl;
+        }
     }
 }
