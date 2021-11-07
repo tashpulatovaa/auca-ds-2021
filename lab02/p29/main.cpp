@@ -18,26 +18,28 @@ int main()
             int maxMatch = 0;
             for (int i = 0; i < sz(block); i++)
             {
-                int matchSum = 0;
+                int matches = 0;
                 for (int j = 0; j < sz(block); j++)
                 {
                     if (j == i)
                         continue;
                     for (int k = 0; k < 5; k++)
                     {
+                        // cout << block[i].substr(k * 4, 3) << "  " << block[j].substr(k * 4, 3) << "  ";
                         if (block[i].substr(k * 4, 3) == block[j].substr(k * 4, 3))
                         {
-                            matchSum++;
+                            matches++;
                         }
                     }
+                    //cout << endl;
                 }
-                if (matchSum > maxMatch)
+                if (matches > maxMatch)
                 {
-                    maxMatch = matchSum;
-                    maxMatchLine = i;
+                    maxMatch = matches;
+                    maxMatchLine = i + 1;
                 }
             }
-            cout << maxMatchLine + 1 << endl;
+            cout << maxMatchLine << endl;
             block.clear();
             continue;
         }
