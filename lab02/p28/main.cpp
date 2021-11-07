@@ -20,21 +20,18 @@ int main()
         }
         bool progression = false;
 
-        for (int i = 1; i < nOfElements - 1; i++)
+        for (int i = 0; i < nOfElements - 2; i++)
         {
-            for (int j = 0; j < i; j++)
+            for (int j = i + 1; j < nOfElements; j++)
             {
-                for (int k = i + 1; k < nOfElements; k++)
+                int nextMember = numbers[j] - numbers[i] + numbers[j];
+                if (nextMember >= 0 && nextMember < nOfElements)
                 {
-                    if (2 * numbers[i] == numbers[j] + numbers[k])
+                    if ((find(numbers.begin(), numbers.end(), nextMember) - numbers.begin()) > j)
                     {
                         progression = true;
                         break;
                     }
-                }
-                if (progression)
-                {
-                    break;
                 }
             }
             if (progression)
