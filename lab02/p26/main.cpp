@@ -29,7 +29,7 @@ int main()
         {
             for (int j = 0; j < rear; j++)
             {
-                driveRatios.push_back((double)(rears[j] * 1.0 / fronts[i] * 1.0));
+                driveRatios.push_back((double)(rears[j] * 1.0) / (double)(fronts[i] * 1.0));
             }
         }
         sort(driveRatios.begin(), driveRatios.end());
@@ -42,7 +42,6 @@ int main()
                 maxNum = driveRatios[i + 1] / driveRatios[i];
             }
         }
-
-        cout << setprecision(3) << maxNum << endl;
+        cout << fixed << setprecision(2) << maxNum << endl;
     }
 }
