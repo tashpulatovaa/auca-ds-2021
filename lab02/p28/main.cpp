@@ -18,15 +18,15 @@ int main()
         {
             cin >> numbers[i];
         }
-
         bool progression = false;
-        for (int i = 0; i < nOfElements - 2; i++)
+
+        for (int i = 1; i < nOfElements - 1; i++)
         {
-            for (int j = i + 1; j < nOfElements - 1; j++)
+            for (int j = 0; j < i; j++)
             {
-                for (int k = j + 1; k < nOfElements; k++)
+                for (int k = i + 1; k < nOfElements; k++)
                 {
-                    if (numbers[k] - numbers[j] == numbers[j] - numbers[i])
+                    if (2 * numbers[i] == numbers[j] + numbers[k])
                     {
                         progression = true;
                         break;
