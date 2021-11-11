@@ -61,9 +61,56 @@ public:
         columns[coordB.first].push_back(columns[coordA.first].back());
         columns[coordA.first].pop_back();
     }
-    void moveOnto(int a, int b)
+    // MARK: - clears the moving block and push_backs only one element
+
+    void moveOver(int a, int b)
     {
+        pair<int, int> coordA = findBlock(a);
+        pair<int, int> coordB = findBlock(b);
+
+        if (coordA.first == coordB.second)
+        {
+            return;
         }
+
+        putBack(coordA);
+
+        columns[coordB.first].push_back(columns[coordA.first].back());
+        columns[coordA.first].pop_back();
+    }
+    void pileOnto(int a, int b)
+    {
+        pair<int, int> coordA = findBlock(a);
+        pair<int, int> coordB = findBlock(b);
+
+        if (coordA.first == coordB.second)
+        {
+            return;
+        }
+
+        putBack(coordB);
+
+        for (int i = 0; i < sz(columns[coordA.first][0]); i++)
+        {
+            columns[coordB.first].push_back(columns[coordA.first][i]);
+            columns[coordA.first].pop_back();
+        }
+    }
+    void pileOver(int a, int b)
+    {
+        pair<int, int> coordA = findBlock(a);
+        pair<int, int> coordB = findBlock(b);
+
+        if (coordA.first == coordB.second)
+        {
+            return;
+        }
+
+        putBack(coordA);
+
+        columns[coordB.first].push_back(columns[coordA.first].back());
+        columns[coordA.first].pop_back();
+    }
 };
 
 ostream &operator<<(ostream &out, const World &world)
