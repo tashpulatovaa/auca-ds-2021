@@ -61,7 +61,6 @@ public:
         columns[coordB.first].push_back(columns[coordA.first].back());
         columns[coordA.first].pop_back();
     }
-    // MARK: - clears the moving block and push_backs only one element
 
     void moveOver(int a, int b)
     {
@@ -87,10 +86,9 @@ public:
         {
             return;
         }
-
         putBack(coordB);
 
-        for (int i = 0; i < sz(columns[coordA.first][0]); i++)
+        for (int i = 0; i < sz(columns[coordA.first]); i++)
         {
             columns[coordB.first].push_back(columns[coordA.first][i]);
             columns[coordA.first].pop_back();
@@ -108,8 +106,11 @@ public:
 
         putBack(coordA);
 
-        columns[coordB.first].push_back(columns[coordA.first].back());
-        columns[coordA.first].pop_back();
+        for (int i = 0; i < sz(columns[coordA.first]); i++)
+        {
+            columns[coordB.first].push_back(columns[coordA.first].back());
+            columns[coordA.first].pop_back();
+        }
     }
 };
 
@@ -150,6 +151,18 @@ int main()
         if (cmd == "move" && cmd2 == "onto")
         {
             world.moveOnto(a, b);
+        }
+        else if (cmd == "move" && cmd2 == "over")
+        {
+            world.moveOver(a, b);
+        }
+        if (cmd == "pile" && cmd2 == "onto")
+        {
+            world.pileOnto(a, b);
+        }
+        if (cmd == "pile" && cmd2 == "over")
+        {
+            world.pileOver(a, b);
         }
     }
     cout << world;
