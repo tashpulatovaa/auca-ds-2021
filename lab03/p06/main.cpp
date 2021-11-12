@@ -50,7 +50,7 @@ public:
         pair<int, int> coordA = findBlock(a);
         pair<int, int> coordB = findBlock(b);
 
-        if (coordA.first == coordB.second)
+        if (coordA.first == coordB.first)
         {
             return;
         }
@@ -67,10 +67,10 @@ public:
         pair<int, int> coordA = findBlock(a);
         pair<int, int> coordB = findBlock(b);
 
-        // if (coordA.first == coordB.second)
-        // {
-        //     return;
-        // }
+        if (coordA.first == coordB.first)
+        {
+            return;
+        }
 
         putBack(coordA);
 
@@ -82,33 +82,27 @@ public:
         pair<int, int> coordA = findBlock(a);
         pair<int, int> coordB = findBlock(b);
 
-        // if (coordA.first == coordB.second)
-        // {
-        //     return;
-        // }
+        if (coordA.first == coordB.first)
+        {
+            return;
+        }
         putBack(coordB);
 
-        // columns[coordB.first].insert(columns[coordB.first].end(), columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
-        // columns[coordA.first].erase(columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
-
-        columns[coordB.first].push_back(columns[coordA.first].back());
-        columns[coordA.first].pop_back();
+        columns[coordB.first].insert(columns[coordB.first].end(), columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
+        columns[coordA.first].erase(columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
     }
     void pileOver(int a, int b)
     {
         pair<int, int> coordA = findBlock(a);
         pair<int, int> coordB = findBlock(b);
 
-        // if (coordA.first == coordB.second)
-        // {
-        //     return;
-        // }
+        if (coordA.first == coordB.first)
+        {
+            return;
+        }
 
-        // columns[coordB.first].insert(columns[coordB.first].end(), columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
-        // columns[coordA.first].erase(columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
-
-        columns[coordB.first].push_back(columns[coordA.first].back());
-        columns[coordA.first].pop_back();
+        columns[coordB.first].insert(columns[coordB.first].end(), columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
+        columns[coordA.first].erase(columns[coordA.first].begin() + coordA.second, columns[coordA.first].end());
     }
 };
 
