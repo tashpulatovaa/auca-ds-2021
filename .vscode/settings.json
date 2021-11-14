@@ -9,5 +9,6 @@
         "unordered_set": "cpp",
         "vector": "cpp",
         "forward_list": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
