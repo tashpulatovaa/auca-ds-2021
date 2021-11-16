@@ -107,15 +107,6 @@ TEST_CASE("Rational: multiplication")
 
         REQUIRE(sout.str() == "1/6");
     }
-    // SUBCASE("1/2 * 0/2")
-    // {
-    //     Rational<int> r1(1, 2);
-    //     Rational<int> r2(0, 2);
-
-    //     sout << r1 * r2;
-
-    //     REQUIRE(sout.str() == "0/4");
-    // }
 }
 TEST_CASE("Rational: divition")
 {
@@ -137,6 +128,226 @@ TEST_CASE("Rational: divition")
         //sout << r1 / r2;
 
         REQUIRE_THROWS_AS(r1 / r2, runtime_error);
+    }
+}
+
+TEST_CASE("Rational: Operator <")
+{
+    ostringstream sout;
+
+    SUBCASE("1/3 < 1/2")
+    {
+        Rational<int> r1(1, 3);
+        Rational<int> r2(1, 2);
+
+        sout << boolalpha << (r1 < r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("1/2 < 1/3")
+    {
+        Rational<int> r1(1, 2);
+        Rational<int> r2(1, 3);
+
+        sout << boolalpha << (r1 < r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+TEST_CASE("Rational: Operator >")
+{
+    ostringstream sout;
+
+    SUBCASE("2/3 > 1/3")
+    {
+        Rational<int> r1(2, 3);
+        Rational<int> r2(1, 3);
+
+        sout << boolalpha << (r1 > r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("1/5 > 1/4")
+    {
+        Rational<int> r1(1, 5);
+        Rational<int> r2(1, 4);
+
+        sout << boolalpha << (r1 > r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+
+TEST_CASE("Rationla: == operator")
+{
+    ostringstream sout;
+
+    SUBCASE("3/5 3/5")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 == r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("3/4 3/5")
+    {
+        Rational<int> r1(3, 4);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 == r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+TEST_CASE("Rationla: != operator")
+{
+    ostringstream sout;
+
+    SUBCASE("3/5 3/5")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 != r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+    SUBCASE("3/4 3/5")
+    {
+        Rational<int> r1(3, 4);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 != r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+}
+TEST_CASE("Rationla: <= operator")
+{
+    ostringstream sout;
+
+    SUBCASE("3/5 3/2")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 2);
+
+        sout << boolalpha << (r1 <= r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("3/5 3/5")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 <= r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("3/4 3/5")
+    {
+        Rational<int> r1(3, 4);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 <= r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+TEST_CASE("Rationla: >= operator")
+{
+    ostringstream sout;
+
+    SUBCASE("3/5 3/2")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 2);
+
+        sout << boolalpha << (r1 >= r2);
+
+        REQUIRE(sout.str() == "false");
+    }
+    SUBCASE("3/5 3/5")
+    {
+        Rational<int> r1(3, 5);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 >= r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("3/4 3/5")
+    {
+        Rational<int> r1(3, 4);
+        Rational<int> r2(3, 5);
+
+        sout << boolalpha << (r1 >= r2);
+
+        REQUIRE(sout.str() == "true");
+    }
+}
+
+TEST_CASE("Rational: input operator")
+{
+    ostringstream sout;
+
+    SUBCASE("3/5")
+    {
+        istringstream sinp("3/5");
+        Rational<int> r;
+        sinp >> r;
+
+        sout << r;
+
+        REQUIRE(sout.str() == "3/5");
+    }
+
+    SUBCASE("one over two")
+    {
+        istringstream sinp("one over two");
+
+        Rational<int> r;
+        sinp >> r;
+
+        REQUIRE(sinp.fail());
+        REQUIRE(r.num() == 0);
+        REQUIRE(r.den() == 1);
+    }
+    SUBCASE("1:3")
+    {
+        istringstream sinp("1:3");
+
+        Rational<int> r;
+
+        sinp >> r;
+
+        REQUIRE(sinp.fail());
+        REQUIRE(r.num() == 0);
+        REQUIRE(r.den() == 1);
+    }
+    SUBCASE("1 /2")
+    {
+        istringstream sinp("1 /2");
+        Rational<int> r;
+
+        sinp >> r;
+
+        REQUIRE(sinp.fail());
+        REQUIRE(r.num() == 0);
+        REQUIRE(r.den() == 1);
+    }
+    SUBCASE("1/ 2")
+    {
+        istringstream sinp("1/ 2");
+        Rational<int> r;
+
+        sinp >> r;
+
+        REQUIRE(sinp.fail());
+        REQUIRE(r.num() == 0);
+        REQUIRE(r.den() == 1);
     }
 }
 
