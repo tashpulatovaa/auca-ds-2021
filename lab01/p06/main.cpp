@@ -261,6 +261,14 @@ TEST_CASE("Vector<T>::iterators")
         auto it4 = v1.begin();
         REQUIRE(*it4++ == 1);
     }
+    SUBCASE("it2 - it2")
+    {
+        vector<int> v = {1, 2, 3, 4};
+        auto it1 = v.begin();
+        auto it2 = v.end();
+
+        REQUIRE(it2 - it1 == 4);
+    }
 
     SUBCASE("insert() and erase() methods")
     {
