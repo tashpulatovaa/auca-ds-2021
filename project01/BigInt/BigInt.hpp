@@ -8,19 +8,18 @@ class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
-    //friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
     std::vector<int> mDigits;
-    bool isNegative;
+    bool mIsNegative;
 
 public:
     BigInt()
-        : isNegative(false)
+        : mIsNegative(false)
     {
         mDigits.push_back(0);
     }
 
     BigInt(const std::string &strValue)
-        : isNegative(false)
+        : mIsNegative(false)
     {
         size_t i = 0;
 
@@ -28,11 +27,11 @@ public:
         {
             if (strValue.size() == 2 && strValue[i + 1] == '0')
             {
-                isNegative = false;
+                mIsNegative = false;
             }
             else
             {
-                isNegative = true;
+                mIsNegative = true;
             }
             ++i;
         }
@@ -71,32 +70,19 @@ public:
 
 inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
 {
-    vector<int> digits;
+    std::string inputString;
+    sin >> inputString;
 
-    int eachDigit;
-    char sign;
+    sin >> inputString;
+    BigInt y(inputString);
+    x = y;
 
-    sin >> sign;
-    if (sign == '-')
-    {
-        x.isNegative = true;
-    }
-    else if (sign == '+')
-    {
-        x.isNegative = false;
-    }
-
-    while (sin >> eachDigit)
-    {
-        digits.push_back(eachDigit - '0');
-    }
-
-    x.mDigits = digits;
+    return sin;
 }
 
 inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 {
-    if (x.isNegative)
+    if (x.mIsNegative)
     {
         out << '-';
     }

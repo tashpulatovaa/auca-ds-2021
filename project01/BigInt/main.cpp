@@ -7,6 +7,8 @@
 
 using namespace std;
 
+// TESTING CONSTRUCTORS
+
 TEST_CASE("BigInt default constructor")
 {
     ostringstream out;
@@ -102,6 +104,8 @@ TEST_CASE("BigInt with string constructor")
     }
 }
 
+// TESTING INPUT CASES
+
 TEST_CASE("BigInt: Input ceses")
 {
     std::ostringstream sout;
@@ -113,6 +117,64 @@ TEST_CASE("BigInt: Input ceses")
         sin >> x;
         sout << x;
 
+        REQUIRE(sout.str() == "12345");
+    }
+
+    SUBCASE("Case 2: input with plus sign")
+    {
+        std::istringstream sin("+1234");
+        BigInt x;
+        sin >> x;
+        sout << x;
+
+        REQUIRE(sout.str() == "1234");
+    }
+
+    SUBCASE("Case 2: input with minus sign")
+    {
+        std::istringstream sin("-1234");
+        BigInt x;
+        sin >> x;
+        sout << x;
+
+        REQUIRE(sout.str() == "-1234");
+    }
+
+    SUBCASE("Case 2: input with other signs")
+    {
+        std::istringstream sin("&1234");
+        BigInt y;
+        REQUIRE_THROWS_AS(sin >> y, runtime_error);
+    }
+
+    SUBCASE("Case 3: 00000123")
+    {
+        std::istringstream sin("00000123");
+        BigInt x;
+        sin >> x;
+        sout << x;
+
         REQUIRE(sout.str() == "123");
     }
+
+    SUBCASE("Case 4: 0000000")
+    {
+        std::istringstream sin("00000");
+        BigInt x;
+        sin >> x;
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
+
+    SUBCASE("Case 5: -0")
+    {
+        std::istringstream sin("-0");
+        BigInt x;
+        sin >> x;
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
 }
+
