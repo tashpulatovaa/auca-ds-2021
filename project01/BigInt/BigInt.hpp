@@ -7,6 +7,8 @@
 class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
+    friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
+    //friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
     std::vector<int> mDigits;
     bool isNegative;
 
@@ -22,9 +24,25 @@ public:
     {
         size_t i = 0;
 
-        if (strValue[i] == '-' || strValue[i] == '+')
+        if (strValue[i] == '-')
         {
-            isNegative = strValue[i];
+            if (strValue.size() == 2 && strValue[i + 1] == '0')
+            {
+                isNegative = false;
+            }
+            else
+            {
+                isNegative = true;
+            }
+            ++i;
+        }
+        else if (strValue[i] == '+')
+        {
+            ++i;
+        }
+
+        while (i + 1 != strValue.size() && strValue[i] == '0')
+        {
             ++i;
         }
 
@@ -32,16 +50,49 @@ public:
         {
             if (!isdigit(strValue[i]))
             {
-                throw std::runtime_error("BigInt cannot be initialized by non-digit character");
+                if (strValue[i] == '_')
+                {
+                    continue;
+                }
+                else
+                {
+                    throw std::runtime_error("BigInt cannot be initialized by non-digit character");
+                }
             }
             mDigits.push_back(strValue[i] - '0');
-            if (mDigits.empty())
-            {
-                throw std::runtime_error("Incorrect string initializer");
-            }
+        }
+        if (mDigits.empty())
+        {
+            throw std::runtime_error("Incorrect string initializer");
         }
     }
+    // use 1_000_000_000 дичную систему чтобы оптимизировать код
 };
+
+inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
+{
+    vector<int> digits;
+
+    int eachDigit;
+    char sign;
+
+    sin >> sign;
+    if (sign == '-')
+    {
+        x.isNegative = true;
+    }
+    else if (sign == '+')
+    {
+        x.isNegative = false;
+    }
+
+    while (sin >> eachDigit)
+    {
+        digits.push_back(eachDigit - '0');
+    }
+
+    x.mDigits = digits;
+}
 
 inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 {
