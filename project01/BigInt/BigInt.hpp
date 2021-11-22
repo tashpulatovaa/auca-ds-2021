@@ -2,6 +2,7 @@
 #include <vector>
 #include <iosfwd>
 #include <string>
+#include <stdexcept>
 
 class BigInt
 {
@@ -26,11 +27,17 @@ public:
             isNegative = strValue[i];
             ++i;
         }
+
         for (; i != strValue.size(); i++)
         {
-            if (isdigit(strValue[i]))
+            if (!isdigit(strValue[i]))
             {
-                mDigits.push_back(strValue[i] - '0');
+                throw std::runtime_error("BigInt cannot be initialized by non-digit character");
+            }
+            mDigits.push_back(strValue[i] - '0');
+            if (mDigits.empty())
+            {
+                throw std::runtime_error("Incorrect string initializer");
             }
         }
     }
