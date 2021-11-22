@@ -178,3 +178,75 @@ TEST_CASE("BigInt: Input ceses")
     }
 }
 
+TEST_CASE("Check constructor with integer parameter")
+{
+    std::ostringstream sout;
+    SUBCASE("Case 1: Proper integer parameter")
+    {
+        int n = 1234;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "1234");
+    }
+
+    // Come to this CASE later
+    // In this case 0000013 is equal to 11, int converts to octal.That is why the result of sout.str() is not 13.
+
+    // SUBCASE("Case 1: 0000013")
+    // {
+    //     int n = 0000013;
+    //     BigInt x(n);
+    //     sout << x;
+
+    //     REQUIRE(sout.str() == "13");
+    // }
+
+    SUBCASE("Case 2: Negative int value")
+    {
+        int n = -1234;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "-1234");
+    }
+
+    SUBCASE("Case 3: int = 0 case")
+    {
+        int n = 0;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
+    SUBCASE("Case 4: int = -0 case")
+    {
+        int n = -0;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
+    SUBCASE("Case 5: int = +0 case")
+    {
+        int n = -0;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
+    SUBCASE("Case 6: int = 0000 case")
+    {
+        int n = 0000;
+        BigInt x(n);
+
+        sout << x;
+
+        REQUIRE(sout.str() == "0");
+    }
+}

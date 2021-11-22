@@ -18,6 +18,30 @@ public:
         mDigits.push_back(0);
     }
 
+    BigInt(int &paramNumber)
+        : mIsNegative(false)
+    {
+        if (paramNumber == 0)
+        {
+            mDigits.push_back(0);
+        }
+        else
+        {
+            if (paramNumber < 0)
+            {
+                mIsNegative = true;
+                paramNumber = -paramNumber;
+            }
+
+            while (paramNumber > 0)
+            {
+                mDigits.push_back(paramNumber % 10);
+                paramNumber /= 10;
+            }
+            reverse(mDigits.begin(), mDigits.end());
+        }
+    }
+
     BigInt(const std::string &strValue)
         : mIsNegative(false)
     {
@@ -93,3 +117,9 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     }
     return out;
 }
+
+// template<typename T>
+// inline BigInt<T> operation+(BigInt x, BigInt y)
+// {
+
+// }
