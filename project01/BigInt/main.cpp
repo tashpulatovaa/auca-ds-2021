@@ -4,6 +4,7 @@
 #include "BigInt.hpp"
 #include <iosfwd>
 #include <stdexcept>
+#include <vector>
 
 using namespace std;
 
@@ -248,5 +249,21 @@ TEST_CASE("Check constructor with integer parameter")
         sout << x;
 
         REQUIRE(sout.str() == "0");
+    }
+}
+
+TEST_CASE("BigInt: '+' operator")
+{
+    std::ostringstream sout;
+    SUBCASE("Case 1: Summing simple BigInts without signs")
+    {
+        BigInt x("123");
+        BigInt y("12");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "135");
     }
 }

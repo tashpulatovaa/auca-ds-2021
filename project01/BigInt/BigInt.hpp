@@ -8,6 +8,7 @@ class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
+    friend BigInt &operator+(const BigInt &x, const BigInt &y);
     std::vector<int> mDigits;
     bool mIsNegative;
 
@@ -118,8 +119,42 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     return out;
 }
 
-// template<typename T>
-// inline BigInt<T> operation+(BigInt x, BigInt y)
-// {
+inline BigInt &operator+(const BigInt &x, const BigInt &y)
+{
+    // STRIGHT FORWARD SOLUTION
 
-// }
+    BigInt sumResult;
+    sumResult.mDigits = std::vector<int>(std::max((x.mDigits).size(), (y.mDigits).size()), 0);
+    sumResult.mIsNegative = false;
+
+    std::vector<int> first = x.mDigits > y.mDigits ? x.mDigits : y.mDigits;
+    std::vector<int> second = y.mDigits > x.mDigits ? y.mDigits : x.mDigits;
+
+    int minLenght = std::min((x.mDigits).size(), (y.mDigits).size());
+    int maxLenght = std::max((x.mDigits).size(), (y.mDigits).size());
+
+    for (int i = first.size() - 1, j = second.size() - 1; i >= 0; i--, j--)
+    {
+        if (j >= 0)
+        {
+            if (first[i] + second[j] >= 10)
+            {
+                sumResult.mDigits[i] += (first[i] + second[j]) % 10;
+                sumResult.mDigits[i - 1] += 1;
+            }
+            else
+            {
+                sumResult.mDigits[i] = first[i] + second[j];
+            }
+        }
+        else
+        {
+            sumResult.mDigits[i] = first[i];
+        }
+    }
+
+    //if they are equal;
+    //consider signs too
+    // }
+    return sumResult;
+}
