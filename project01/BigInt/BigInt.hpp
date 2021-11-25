@@ -9,6 +9,8 @@ class BigInt
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
+    friend BigInt operator-(const BigInt &x, const BigInt &y);
+
     std::vector<int> mDigits;
     bool mIsNegative;
 
@@ -124,22 +126,42 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
     // STRIGHT FORWARD SOLUTION
 
     BigInt sumResult;
-    sumResult.mDigits = std::vector<int>(std::max((x.mDigits).size(), (y.mDigits).size()), 0);
     sumResult.mIsNegative = false;
+    std::vector<int> first = (x.mDigits.size() >= y.mDigits.size()) ? x.mDigits : y.mDigits;
+    std::vector<int> second = (y.mDigits.size() <= x.mDigits.size()) ? y.mDigits : x.mDigits;
 
-    //std::vector<int> first = x.mDigits;
-    //std::vector<int> second = y.mDigits;
-    std::vector<int> first = (x.mDigits.size() > y.mDigits.size()) ? x.mDigits : y.mDigits;
-    std::vector<int> second = (y.mDigits.size() < x.mDigits.size()) ? y.mDigits : x.mDigits;
+    if (x.mIsNegative && y.mIsNegative)
+    {
+        sumResult.mIsNegative = true;
+    }
+    if (x.mIsNegative || y.mIsNegative)
+    {
+        if ((!y.mIsNegative) && x.mIsNegative)
+        {
+            return sumResult = y - x;
+        }
+        else if ((!x.mIsNegative) && y.mIsNegative)
+        {
+            return sumResult = x - y;
+        }
+    }
+    sumResult.mDigits = std::vector<int>(std::max((first).size(), (second).size()), 0);
 
-    for (int i = first.size() - 1, j = second.size() - 1; i >= 0; i--, j--)
+    for (int i = (sumResult.mDigits).size() - 1, j = second.size() - 1; i >= 0; i--, j--)
     {
         if (j >= 0)
         {
             if ((first[i] + second[j]) >= 10)
             {
                 sumResult.mDigits[i] += ((first[i] + second[j]) % 10);
-                sumResult.mDigits[i - 1] += 1;
+                if (i - 1 == (-1))
+                {
+                    sumResult.mDigits.insert(sumResult.mDigits.begin(), 1);
+                }
+                else
+                {
+                    sumResult.mDigits[i - 1] += 1;
+                }
             }
             else
             {
@@ -148,12 +170,27 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
         }
         else
         {
-            sumResult.mDigits[i] += first[i];
+            if ((sumResult.mDigits[i] + first[i]) >= 10)
+            {
+                sumResult.mDigits[i] = ((sumResult.mDigits[i] + first[i]) % 10);
+                if (i - 1 == (-1))
+                {
+                    sumResult.mDigits.insert(sumResult.mDigits.begin(), 1);
+                }
+                else
+                {
+                    sumResult.mDigits[i - 1] += 1;
+                }
+            }
+            else
+            {
+                sumResult.mDigits[i] += first[i];
+            }
         }
     }
-
-    //if they are equal;
-    //consider signs too
-    // }
     return sumResult;
+}
+
+inline BigInt operator-(const BigInt &x, const BigInt &y)
+{
 }

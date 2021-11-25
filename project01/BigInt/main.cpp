@@ -266,4 +266,59 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "135");
     }
+    SUBCASE("Case 2: Summing BigInts with equal size")
+    {
+        BigInt x("123");
+        BigInt y("123");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "246");
+    }
+    SUBCASE("Case 3: Summing simple 2 negative BigInts")
+    {
+        BigInt x("-123");
+        BigInt y("-123");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "-246");
+    }
+    SUBCASE("Case 4: Summing BigInts that creat BigInt with bigger size")
+    {
+        BigInt x("923");
+        BigInt y("123");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "1046");
+    }
+    SUBCASE("Case 5: Summing BigInts with signs that creat BigInt with bigger size")
+    {
+        BigInt x("-923");
+        BigInt y("-123");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "-1046");
+    }
+    // SUBCASE("Case 6: Summing BigInts with signs that creat BigInt with bigger size")
+    // {
+    //     BigInt x("998986678");
+    //     BigInt y("1457474");
+
+    //     BigInt sum = x + y;
+
+    //     sout << sum;
+
+    //     REQUIRE(sout.str() == "1000444152");
+    // }
 }
