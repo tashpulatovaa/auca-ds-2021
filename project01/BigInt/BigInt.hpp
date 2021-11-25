@@ -8,7 +8,7 @@ class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
-    friend BigInt &operator+(const BigInt &x, const BigInt &y);
+    friend BigInt operator+(const BigInt &x, const BigInt &y);
     std::vector<int> mDigits;
     bool mIsNegative;
 
@@ -119,7 +119,7 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     return out;
 }
 
-inline BigInt &operator+(const BigInt &x, const BigInt &y)
+inline BigInt operator+(const BigInt &x, const BigInt &y)
 {
     // STRIGHT FORWARD SOLUTION
 
@@ -127,29 +127,28 @@ inline BigInt &operator+(const BigInt &x, const BigInt &y)
     sumResult.mDigits = std::vector<int>(std::max((x.mDigits).size(), (y.mDigits).size()), 0);
     sumResult.mIsNegative = false;
 
-    std::vector<int> first = x.mDigits > y.mDigits ? x.mDigits : y.mDigits;
-    std::vector<int> second = y.mDigits > x.mDigits ? y.mDigits : x.mDigits;
-
-    int minLenght = std::min((x.mDigits).size(), (y.mDigits).size());
-    int maxLenght = std::max((x.mDigits).size(), (y.mDigits).size());
+    //std::vector<int> first = x.mDigits;
+    //std::vector<int> second = y.mDigits;
+    std::vector<int> first = (x.mDigits.size() > y.mDigits.size()) ? x.mDigits : y.mDigits;
+    std::vector<int> second = (y.mDigits.size() < x.mDigits.size()) ? y.mDigits : x.mDigits;
 
     for (int i = first.size() - 1, j = second.size() - 1; i >= 0; i--, j--)
     {
         if (j >= 0)
         {
-            if (first[i] + second[j] >= 10)
+            if ((first[i] + second[j]) >= 10)
             {
-                sumResult.mDigits[i] += (first[i] + second[j]) % 10;
+                sumResult.mDigits[i] += ((first[i] + second[j]) % 10);
                 sumResult.mDigits[i - 1] += 1;
             }
             else
             {
-                sumResult.mDigits[i] = first[i] + second[j];
+                sumResult.mDigits[i] += first[i] + second[j];
             }
         }
         else
         {
-            sumResult.mDigits[i] = first[i];
+            sumResult.mDigits[i] += first[i];
         }
     }
 
