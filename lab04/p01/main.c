@@ -10,7 +10,18 @@ int main(void)
     p = &x;
 
     printf("x = %d\n", x);
+    printf("address of x = %p\n", (void *)p);
+    printf("x = %d\n", *p); // dereference operator
+
+    *p = 2;
+
+    printf("x = %d\n", x);
     printf("x = %d\n", *p);
 
-    printf("Hello, world\n");
+    y = *p * *p;
+
+    printf("y = %d\n", y);
+
+    printf("%ld\n", sizeof(int));
+    printf("%ld\n", sizeof(int *));
 }
