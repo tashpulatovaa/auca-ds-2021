@@ -151,9 +151,9 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
     {
         if (j >= 0)
         {
-            if ((first[i] + second[j]) >= 10)
+            if ((first[i] + second[j]) + sumResult.mDigits[i] >= 10)
             {
-                sumResult.mDigits[i] += ((first[i] + second[j]) % 10);
+                sumResult.mDigits[i] = ((first[i] + second[j] + sumResult.mDigits[i]) % 10);
                 if (i - 1 == (-1))
                 {
                     sumResult.mDigits.insert(sumResult.mDigits.begin(), 1);
@@ -170,7 +170,7 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
         }
         else
         {
-            if ((sumResult.mDigits[i] + first[i]) >= 10)
+            if ((sumResult.mDigits[i] + first[i] + sumResult.mDigits[i]) >= 10)
             {
                 sumResult.mDigits[i] = ((sumResult.mDigits[i] + first[i]) % 10);
                 if (i - 1 == (-1))

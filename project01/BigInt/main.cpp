@@ -310,15 +310,26 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "-1046");
     }
-    // SUBCASE("Case 6: Summing BigInts with signs that creat BigInt with bigger size")
-    // {
-    //     BigInt x("998986678");
-    //     BigInt y("1457474");
+    SUBCASE("Case 6: Summing BigInts with signs that creat BigInt with bigger size ")
+    {
+        BigInt x("998986678");
+        BigInt y("1457474");
 
-    //     BigInt sum = x + y;
+        BigInt sum = x + y;
 
-    //     sout << sum;
+        sout << sum;
 
-    //     REQUIRE(sout.str() == "1000444152");
-    // }
+        REQUIRE(sout.str() == "1000444152");
+    }
+    SUBCASE("Case 7: Summing BigInts with signs that creat BigInt with bigger size")
+    {
+        BigInt x("-998986678");
+        BigInt y("-1457474");
+
+        BigInt sum = x + y;
+
+        sout << sum;
+
+        REQUIRE(sout.str() == "-1000444152");
+    }
 }
