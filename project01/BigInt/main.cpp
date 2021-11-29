@@ -415,3 +415,117 @@ TEST_CASE("BigInt: '<' operator ")
         REQUIRE(sout.str() == "true");
     }
 }
+TEST_CASE("BigInt: '>' operator ")
+{
+    std::ostringstream sout;
+    SUBCASE("-10000000000 < -9999999999")
+    {
+        BigInt x(-10000000000);
+        BigInt y(-9999999999);
+
+        sout << boolalpha << (x > y);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+TEST_CASE("BigInt: '==' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("-10000000000 == -10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(-10000000000);
+
+        sout << boolalpha << (x == y);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("-10000000000 == 10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(10000000000);
+
+        sout << boolalpha << (x == y);
+
+        REQUIRE(sout.str() == "false");
+    }
+    SUBCASE("10000000000 == 10000000000")
+    {
+        BigInt x(10000000000);
+        BigInt y(10000000000);
+
+        sout << boolalpha << (x == y);
+
+        REQUIRE(sout.str() == "true");
+    }
+}
+TEST_CASE("BigInt: '!=' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("-10000000000 != -10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(-10000000000);
+
+        sout << boolalpha << (x != y);
+
+        REQUIRE(sout.str() == "false");
+    }
+    SUBCASE("-10000000000 != 10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(10000000000);
+
+        sout << boolalpha << (x != y);
+
+        REQUIRE(sout.str() == "true");
+    }
+}
+TEST_CASE("BigInt: '>=' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("-10000000000 >= -10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(-10000000000);
+
+        sout << boolalpha << (x >= y);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("-10000000000 >= 10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(10000000000);
+
+        sout << boolalpha << (x >= y);
+
+        REQUIRE(sout.str() == "false");
+    }
+}
+TEST_CASE("BigInt: '<=' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("-10 <= -10")
+    {
+        BigInt x(-10);
+        BigInt y(-10);
+
+        sout << boolalpha << (x <= y);
+
+        REQUIRE(sout.str() == "true");
+    }
+    SUBCASE("-10000000000 <= 10000000000")
+    {
+        BigInt x(-10000000000);
+        BigInt y(10000000000);
+
+        sout << boolalpha << (x <= y);
+
+        REQUIRE(sout.str() == "true");
+    }
+}
