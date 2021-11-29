@@ -11,6 +11,7 @@ class BigInt
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
     friend BigInt operator-(const BigInt &x, const BigInt &y);
+    friend bool operator<(const BigInt &x, const BigInt &y);
 
     std::vector<int> mDigits;
     bool mIsNegative;
@@ -268,4 +269,22 @@ inline BigInt operator-(const BigInt &x, const BigInt &y)
             return r;
         }
     }
+}
+
+inline bool operator<(const BigInt &x, const BigInt &y)
+{
+    if (x.mIsNegative && !(y.mIsNegative))
+    {
+        return true;
+    }
+    if (!(x.mIsNegative) && y.mIsNegative)
+    {
+        return false;
+    }
+    if (!(x.mIsNegative) && !(y.mIsNegative))
+    {
+        return (BigInt::cmpAbsValues(x, y)) < 0;
+    }
+
+    return (BigInt::cmpAbsValues(x, y)) > 0;
 }

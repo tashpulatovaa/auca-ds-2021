@@ -262,6 +262,11 @@ TEST_CASE("BigInt: '+' operator")
     //         }
     //     }
     // }
+}
+
+TEST_CASE("BigInt: '-' operator")
+{
+    std::ostringstream sout;
 
     // SUBCASE("10 - 3")
     // {
@@ -317,19 +322,96 @@ TEST_CASE("BigInt: '+' operator")
 
     //     REQUIRE(sout.str() == "7");
     // }
-    SUBCASE("Case 4: [-500, 500]")
-    {
-        for (int i = -500; i < 500; i++)
-        {
-            for (int j = -500; j < 500; j++)
-            {
-                BigInt x = i;
-                BigInt y = j;
+    // SUBCASE("Case 4: [-500, 500]")
+    // {
+    //     for (int i = -500; i < 500; i++)
+    //     {
+    //         for (int j = -500; j < 500; j++)
+    //         {
+    //             BigInt x = i;
+    //             BigInt y = j;
 
-                ostringstream sout2;
-                sout2 << x - y;
-                REQUIRE(sout2.str() == to_string(i - j));
-            }
-        }
+    //             ostringstream sout2;
+    //             sout2 << x - y;
+    //             REQUIRE(sout2.str() == to_string(i - j));
+    //         }
+    //     }
+    // }
+}
+
+TEST_CASE("BigInt: '<' operator ")
+{
+    std::ostringstream sout;
+    // SUBCASE("10 < 4")
+    // {
+    //     BigInt x(10);
+    //     BigInt y(4);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "false");
+    // }
+    // SUBCASE("10 < 4")
+    // {
+    //     BigInt x(10);
+    //     BigInt y(4);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "false");
+    // }
+    // SUBCASE("4 < 10")
+    // {
+    //     BigInt x(4);
+    //     BigInt y(10);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "true");
+    // }
+    // SUBCASE("-10 < 4")
+    // {
+    //     BigInt x(-10);
+    //     BigInt y(4);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "true");
+    // }
+    // SUBCASE("-4 < 10")
+    // {
+    //     BigInt x(-4);
+    //     BigInt y(10);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "true");
+    // }
+    // SUBCASE("-10 < -4")
+    // {
+    //     BigInt x(-10);
+    //     BigInt y(-4);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "true");
+    // }
+    // SUBCASE("-4 < -10")
+    // {
+    //     BigInt x(-4);
+    //     BigInt y(-10);
+
+    //     sout << boolalpha << (x < y);
+
+    //     REQUIRE(sout.str() == "false");
+    // }
+    SUBCASE("-10000000000 < -9999999999")
+    {
+        BigInt x(-10000000000);
+        BigInt y(-9999999999);
+
+        sout << boolalpha << (x < y);
+
+        REQUIRE(sout.str() == "true");
     }
 }
