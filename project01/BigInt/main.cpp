@@ -5,12 +5,13 @@
 #include <iosfwd>
 #include <stdexcept>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
 // TESTING CONSTRUCTORS
 
-TEST_CASE("BigInt default constructor")
+TEST_CASE("BigInt: default constructor")
 {
     ostringstream out;
     BigInt x;
@@ -19,11 +20,11 @@ TEST_CASE("BigInt default constructor")
     REQUIRE(out.str() == "0");
 }
 
-TEST_CASE("BigInt with string constructor")
+TEST_CASE("BigInt: Constructor with string")
 {
     ostringstream out;
 
-    SUBCASE("Case 1: Check initialization with proper string parameter")
+    SUBCASE("Case 1: 123")
     {
         BigInt x("123");
         out << x;
@@ -31,7 +32,7 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "123");
     }
 
-    SUBCASE("Case 2: Check BigInt with '-' sign")
+    SUBCASE("Case 2: -12323535344")
     {
         BigInt x("-12323535344");
         out << x;
@@ -39,7 +40,7 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "-12323535344");
     }
 
-    SUBCASE("Case 2: Check BigInt with '+' sign")
+    SUBCASE("Case 3: +12323535344")
     {
         BigInt x("+12323535344");
         out << x;
@@ -47,17 +48,17 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "12323535344");
     }
 
-    SUBCASE("Case 3: Check initialization with some non-digits string parameter")
+    SUBCASE("Case 4: 1o3d34534436a")
     {
         REQUIRE_THROWS_AS(BigInt x("1o3d34534436a"), runtime_error);
     }
 
-    SUBCASE("Case 4: Only sign is given case")
+    SUBCASE("Case 5: '-' ")
     {
         REQUIRE_THROWS_AS(BigInt("-"), runtime_error);
     }
 
-    SUBCASE("Case 5: Zeros in the beginning")
+    SUBCASE("Case 6: 0000123")
     {
         BigInt x("0000123");
         out << x;
@@ -65,7 +66,7 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "123");
     }
 
-    SUBCASE("Case 5: Zeros in the beginning with minus sign")
+    SUBCASE("Case 7: -0000123")
     {
         BigInt x("-0000123");
         out << x;
@@ -73,15 +74,7 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "-123");
     }
 
-    SUBCASE("Case 6: Zeros in the beginning with plus sign")
-    {
-        BigInt x("+0000123");
-        out << x;
-
-        REQUIRE(out.str() == "123");
-    }
-
-    SUBCASE("Case 7: Many zeros")
+    SUBCASE("Case 8: 0000")
     {
         BigInt x("0000");
         out << x;
@@ -89,14 +82,18 @@ TEST_CASE("BigInt with string constructor")
         REQUIRE(out.str() == "0");
     }
 
-    SUBCASE("Case 7: -0 situation")
+    SUBCASE("Case 9: -0 ")
     {
         BigInt x("-0");
         out << x;
 
         REQUIRE(out.str() == "0");
     }
-    SUBCASE("Case 7: 1_000_000_000 situation")
+    SUBCASE("Case 10: empty string ")
+    {
+        REQUIRE_THROWS_AS(BigInt(""), runtime_error);
+    }
+    SUBCASE("Case 11: 1_000_000_000")
     {
         BigInt x("1_000_000_000");
         out << x;
@@ -105,7 +102,19 @@ TEST_CASE("BigInt with string constructor")
     }
 }
 
-// TESTING INPUT CASES
+TEST_CASE("Check constructor with integer parameter")
+{
+    std::ostringstream sout;
+    SUBCASE("Case 1:")
+    {
+        BigInt x(numeric_limits<long long>::min());
+        sout << x;
+
+        REQUIRE(sout.str() == "-9223372036854775808");
+    }
+}
+
+// TESTING INPUT OPERATOR
 
 TEST_CASE("BigInt: Input ceses")
 {
@@ -179,83 +188,13 @@ TEST_CASE("BigInt: Input ceses")
     }
 }
 
-TEST_CASE("Check constructor with integer parameter")
-{
-    std::ostringstream sout;
-    SUBCASE("Case 1: Proper integer parameter")
-    {
-        int n = 1234;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "1234");
-    }
-
-    // Come to this CASE later
-    // In this case 0000013 is equal to 11, int converts to octal.That is why the result of sout.str() is not 13.
-
-    // SUBCASE("Case 1: 0000013")
-    // {
-    //     int n = 0000013;
-    //     BigInt x(n);
-    //     sout << x;
-
-    //     REQUIRE(sout.str() == "13");
-    // }
-
-    SUBCASE("Case 2: Negative int value")
-    {
-        int n = -1234;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "-1234");
-    }
-
-    SUBCASE("Case 3: int = 0 case")
-    {
-        int n = 0;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "0");
-    }
-    SUBCASE("Case 4: int = -0 case")
-    {
-        int n = -0;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "0");
-    }
-    SUBCASE("Case 5: int = +0 case")
-    {
-        int n = -0;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "0");
-    }
-    SUBCASE("Case 6: int = 0000 case")
-    {
-        int n = 0000;
-        BigInt x(n);
-
-        sout << x;
-
-        REQUIRE(sout.str() == "0");
-    }
-}
+// TESTING ADDITION OPERATOR
 
 TEST_CASE("BigInt: '+' operator")
 {
     std::ostringstream sout;
-    SUBCASE("Case 1: Summing simple BigInts without signs")
+
+    SUBCASE("Case 1: 123 + 12")
     {
         BigInt x("123");
         BigInt y("12");
@@ -266,18 +205,17 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "135");
     }
-    SUBCASE("Case 2: Summing BigInts with equal size")
+    SUBCASE("Case 2: 999999999 + 1")
     {
-        BigInt x("123");
-        BigInt y("123");
+        std::ostringstream out;
+        BigInt x("999999999");
+        BigInt y("1");
 
-        BigInt sum = x + y;
+        out << x + y;
 
-        sout << sum;
-
-        REQUIRE(sout.str() == "246");
+        REQUIRE(out.str() == "1000000000");
     }
-    SUBCASE("Case 3: Summing simple 2 negative BigInts")
+    SUBCASE("Case 3: -123 + (-123)")
     {
         BigInt x("-123");
         BigInt y("-123");
@@ -288,48 +226,18 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "-246");
     }
-    SUBCASE("Case 4: Summing BigInts that creat BigInt with bigger size")
+    SUBCASE("Case 4: [0, 1000]")
     {
-        BigInt x("923");
-        BigInt y("123");
+        for (int i = 0; i < 1000; i++)
+        {
+            for (int j = 0; j < 1000; j++)
+            {
+                BigInt x = i;
+                BigInt y = j;
 
-        BigInt sum = x + y;
-
-        sout << sum;
-
-        REQUIRE(sout.str() == "1046");
-    }
-    SUBCASE("Case 5: Summing BigInts with signs that creat BigInt with bigger size")
-    {
-        BigInt x("-923");
-        BigInt y("-123");
-
-        BigInt sum = x + y;
-
-        sout << sum;
-
-        REQUIRE(sout.str() == "-1046");
-    }
-    SUBCASE("Case 6: Summing BigInts with signs that creat BigInt with bigger size ")
-    {
-        BigInt x("998986678");
-        BigInt y("1457474");
-
-        BigInt sum = x + y;
-
-        sout << sum;
-
-        REQUIRE(sout.str() == "1000444152");
-    }
-    SUBCASE("Case 7: Summing BigInts with signs that creat BigInt with bigger size")
-    {
-        BigInt x("-998986678");
-        BigInt y("-1457474");
-
-        BigInt sum = x + y;
-
-        sout << sum;
-
-        REQUIRE(sout.str() == "-1000444152");
+                sout << x + y;
+                REQUIRE(sout.str() == to_string(i + j));
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <iosfwd>
 #include <string>
@@ -14,6 +15,95 @@ class BigInt
     std::vector<int> mDigits;
     bool mIsNegative;
 
+    static BigInt addAbsValues(const BigInt &x, const BigInt &y)
+    {
+        BigInt result;
+        result.mDigits.clear();
+        auto p = x.mDigits.rbegin();
+        auto q = y.mDigits.rbegin();
+
+        int carry = 0;
+
+        while (p != x.mDigits.rend() || q != y.mDigits.rend())
+        {
+            int sum = carry;
+            if (p != x.mDigits.rend())
+            {
+                sum += *p;
+                ++p;
+            }
+            if (q != y.mDigits.rend())
+            {
+                sum += *q;
+                ++q;
+            }
+            result.mDigits.push_back(sum % 10);
+            carry = sum / 10;
+        }
+        if (carry != 0)
+        {
+            result.mDigits.push_back(carry);
+        }
+        std::reverse(result.mDigits.begin(), result.mDigits.end());
+
+        return result;
+    }
+
+    static BigInt subAbsValues(const BigInt &x, const BigInt &y)
+    {
+        // if(x < y)
+        // {
+        //     BigInt temp = x;
+        //     x = y;
+        //     y = temp;
+        // }
+        BigInt result;
+        result.mDigits.clear();
+        auto p = x.mDigits.rbegin();
+        auto q = y.mDigits.rbegin();
+
+        int carry = 0;
+
+        bool firstZero = true;
+        while (p != x.mDigits.rend() || q != y.mDigits.rend())
+        {
+            int dif = carry;
+            if (p != x.mDigits.rend())
+            {
+                if (carry == (-1) && *p == 0 && !firstZero)
+                {
+                    dif = 9;
+                }
+
+                dif += *p;
+                ++p;
+                carry = 0;
+                if (*p == 0 && !firstZero)
+                {
+                    carry = -1;
+                }
+            }
+            if (q != y.mDigits.rend())
+            {
+                if (dif < *q)
+                {
+                    dif += 10;
+                    carry = -1;
+                }
+                dif -= *q;
+                ++q;
+            }
+            result.mDigits.push_back(dif);
+            if (*p == 0 && firstZero)
+            {
+                firstZero = false;
+            }
+        }
+        std::reverse(result.mDigits.begin(), result.mDigits.end());
+
+        return result;
+    }
+
 public:
     BigInt()
         : mIsNegative(false)
@@ -21,49 +111,23 @@ public:
         mDigits.push_back(0);
     }
 
-    BigInt(int &paramNumber)
-        : mIsNegative(false)
+    BigInt(long long x)
+        : BigInt(std::to_string(x))
     {
-        if (paramNumber == 0)
-        {
-            mDigits.push_back(0);
-        }
-        else
-        {
-            if (paramNumber < 0)
-            {
-                mIsNegative = true;
-                paramNumber = -paramNumber;
-            }
-
-            while (paramNumber > 0)
-            {
-                mDigits.push_back(paramNumber % 10);
-                paramNumber /= 10;
-            }
-            reverse(mDigits.begin(), mDigits.end());
-        }
     }
 
-    BigInt(const std::string &strValue)
+    explicit BigInt(const std::string &strValue)
         : mIsNegative(false)
     {
         size_t i = 0;
 
-        if (strValue[i] == '-')
+        if (strValue.empty())
         {
-            if (strValue.size() == 2 && strValue[i + 1] == '0')
-            {
-                mIsNegative = false;
-            }
-            else
-            {
-                mIsNegative = true;
-            }
-            ++i;
+            throw std::runtime_error("BigInt: Incorrect string initializer");
         }
-        else if (strValue[i] == '+')
+        if (strValue[i] == '-' || strValue[i] == '+')
         {
+            mIsNegative = strValue[i] == '-';
             ++i;
         }
 
@@ -90,6 +154,10 @@ public:
         if (mDigits.empty())
         {
             throw std::runtime_error("Incorrect string initializer");
+        }
+        if (mDigits.size() == 1 && mDigits.front() == 0)
+        {
+            mIsNegative = false;
         }
     }
     // use 1_000_000_000 дичную систему чтобы оптимизировать код
@@ -123,74 +191,18 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 
 inline BigInt operator+(const BigInt &x, const BigInt &y)
 {
-    // STRIGHT FORWARD SOLUTION
-
-    BigInt sumResult;
-    sumResult.mIsNegative = false;
-    std::vector<int> first = (x.mDigits.size() >= y.mDigits.size()) ? x.mDigits : y.mDigits;
-    std::vector<int> second = (y.mDigits.size() <= x.mDigits.size()) ? y.mDigits : x.mDigits;
-
-    if (x.mIsNegative && y.mIsNegative)
+    if (x.mIsNegative == y.mIsNegative)
     {
-        sumResult.mIsNegative = true;
+        BigInt r = BigInt::addAbsValues(x, y);
+        r.mIsNegative = x.mIsNegative;
+        return r;
     }
-    if (x.mIsNegative || y.mIsNegative)
-    {
-        if ((!y.mIsNegative) && x.mIsNegative)
-        {
-            return sumResult = y - x;
-        }
-        else if ((!x.mIsNegative) && y.mIsNegative)
-        {
-            return sumResult = x - y;
-        }
-    }
-    sumResult.mDigits = std::vector<int>(std::max((first).size(), (second).size()), 0);
-
-    for (int i = (sumResult.mDigits).size() - 1, j = second.size() - 1; i >= 0; i--, j--)
-    {
-        if (j >= 0)
-        {
-            if ((first[i] + second[j]) + sumResult.mDigits[i] >= 10)
-            {
-                sumResult.mDigits[i] = ((first[i] + second[j] + sumResult.mDigits[i]) % 10);
-                if (i - 1 == (-1))
-                {
-                    sumResult.mDigits.insert(sumResult.mDigits.begin(), 1);
-                }
-                else
-                {
-                    sumResult.mDigits[i - 1] += 1;
-                }
-            }
-            else
-            {
-                sumResult.mDigits[i] += first[i] + second[j];
-            }
-        }
-        else
-        {
-            if ((sumResult.mDigits[i] + first[i] + sumResult.mDigits[i]) >= 10)
-            {
-                sumResult.mDigits[i] = ((sumResult.mDigits[i] + first[i]) % 10);
-                if (i - 1 == (-1))
-                {
-                    sumResult.mDigits.insert(sumResult.mDigits.begin(), 1);
-                }
-                else
-                {
-                    sumResult.mDigits[i - 1] += 1;
-                }
-            }
-            else
-            {
-                sumResult.mDigits[i] += first[i];
-            }
-        }
-    }
-    return sumResult;
 }
 
 inline BigInt operator-(const BigInt &x, const BigInt &y)
 {
+
+    BigInt r = BigInt::subAbsValues(x, y);
+    r.mIsNegative = false;
+    return r;
 }
