@@ -83,8 +83,35 @@ class BigInt
         int borrow = 0;
         while (i != a.mDigits.rend())
         {
-            int dif;
+            int dif = *i - borrow;
+            ++i;
+
+            if (j != b.mDigits.rend())
+            {
+                dif -= *j;
+                ++j;
+            }
+
+            if (dif < 0)
+            {
+                dif += 10;
+                borrow = 1;
+            }
+            else
+            {
+                borrow = 0;
+            }
+
+            r.mDigits.push_back(dif);
         }
+
+        while (r.mDigits.size() > 1 && r.mDigits.back() == 0)
+        {
+            r.mDigits.pop_back();
+        }
+
+        std::reverse(r.mDigits.begin(), r.mDigits.end());
+        return r;
     }
 
 public:
@@ -198,4 +225,47 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
 
 inline BigInt operator-(const BigInt &x, const BigInt &y)
 {
+    // (5) - (-3) -> 5 + 3
+
+    if (!(x.mIsNegative) && y.mIsNegative)
+    {
+        BigInt r = BigInt::addAbsValues(x, y);
+        r.mIsNegative = false;
+        return r;
+    }
+
+    // (-5) - (3) -> -(5+3)
+
+    if (x.mIsNegative && !(y.mIsNegative))
+    {
+        BigInt r = BigInt::addAbsValues(x, y);
+        r.mIsNegative = true;
+        return r;
+    }
+
+    // 5 - 3 -> 2
+    // 3 - 5 -> (-2)
+    // (-5) - (-3) -> (-5) + 3 -> (-2);
+    // (-3) - (-5) -> (-3) + 5 -> 2;
+
+    if (x.mIsNegative == y.mIsNegative)
+    {
+        int cmp = BigInt::cmpAbsValues(x, y);
+        if (cmp == 0)
+        {
+            return BigInt();
+        }
+        else if (cmp > 0)
+        {
+            BigInt r = BigInt::subAbsValues(x, y);
+            r.mIsNegative = x.mIsNegative;
+            return r;
+        }
+        else
+        {
+            BigInt r = BigInt::subAbsValues(y, x);
+            r.mIsNegative = !y.mIsNegative;
+            return r;
+        }
+    }
 }

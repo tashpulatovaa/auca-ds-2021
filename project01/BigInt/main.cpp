@@ -226,7 +226,7 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "-246");
     }
-    SUBCASE("Case 4:  + (-123)")
+    SUBCASE("Case 4: -123 + (-123)")
     {
         BigInt x("-123");
         BigInt y("-123");
@@ -237,12 +237,21 @@ TEST_CASE("BigInt: '+' operator")
 
         REQUIRE(sout.str() == "-246");
     }
+    SUBCASE("Case 5: -3 + 3")
+    {
+        BigInt x(-3);
+        BigInt y(3);
 
-    // SUBCASE("Case 4: [0, 1000]")
+        sout << x + y;
+
+        REQUIRE(sout.str() == "0");
+    }
+
+    // SUBCASE("Case 4: [-500, 500]")
     // {
-    //     for (int i = 0; i < 1000; i++)
+    //     for (int i = -500; i < 500; i++)
     //     {
-    //         for (int j = 0; j < 1000; j++)
+    //         for (int j = -500; j < 500; j++)
     //         {
     //             BigInt x = i;
     //             BigInt y = j;
@@ -253,4 +262,74 @@ TEST_CASE("BigInt: '+' operator")
     //         }
     //     }
     // }
+
+    // SUBCASE("10 - 3")
+    // {
+    //     BigInt x(10);
+    //     BigInt y(3);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "7");
+    // }
+    // SUBCASE("3 - 10")
+    // {
+    //     BigInt x(3);
+    //     BigInt y(10);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "-7");
+    // }
+    // SUBCASE("-10 - 3")
+    // {
+    //     BigInt x(-10);
+    //     BigInt y(3);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "-13");
+    // }
+    // SUBCASE("-3 - 10")
+    // {
+    //     BigInt x(-3);
+    //     BigInt y(10);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "-13");
+    // }
+    // SUBCASE("-10 - (-3")
+    // {
+    //     BigInt x(-10);
+    //     BigInt y(-3);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "-7");
+    // }
+    // SUBCASE("-3 - (-10)")
+    // {
+    //     BigInt x(-3);
+    //     BigInt y(-10);
+
+    //     sout << x - y;
+
+    //     REQUIRE(sout.str() == "7");
+    // }
+    SUBCASE("Case 4: [-500, 500]")
+    {
+        for (int i = -500; i < 500; i++)
+        {
+            for (int j = -500; j < 500; j++)
+            {
+                BigInt x = i;
+                BigInt y = j;
+
+                ostringstream sout2;
+                sout2 << x - y;
+                REQUIRE(sout2.str() == to_string(i - j));
+            }
+        }
+    }
 }
