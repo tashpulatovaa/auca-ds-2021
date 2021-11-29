@@ -15,6 +15,29 @@ class BigInt
     std::vector<int> mDigits;
     bool mIsNegative;
 
+    static int cmpAbsValues(const BigInt &a, const BigInt &b)
+    {
+        if (a.mDigits.size() > b.mDigits.size())
+        {
+            return 1;
+        }
+
+        if (a.mDigits.size() < b.mDigits.size())
+        {
+            return -1;
+        }
+
+        for (size_t i = 0; i < a.mDigits.size(); ++i)
+        {
+            if (a.mDigits[i] != b.mDigits[i])
+            {
+                return a.mDigits[i] - b.mDigits[i];
+            }
+        }
+
+        return 0;
+    }
+
     static BigInt addAbsValues(const BigInt &x, const BigInt &y)
     {
         BigInt result;
@@ -49,59 +72,19 @@ class BigInt
         return result;
     }
 
-    static BigInt subAbsValues(const BigInt &x, const BigInt &y)
+    static BigInt subAbsValues(const BigInt &a, const BigInt &b)
     {
-        // if(x < y)
-        // {
-        //     BigInt temp = x;
-        //     x = y;
-        //     y = temp;
-        // }
-        BigInt result;
-        result.mDigits.clear();
-        auto p = x.mDigits.rbegin();
-        auto q = y.mDigits.rbegin();
+        BigInt r;
+        r.mDigits.clear();
 
-        int carry = 0;
+        auto i = a.mDigits.rbegin();
+        auto j = b.mDigits.rbegin();
 
-        bool firstZero = true;
-        while (p != x.mDigits.rend() || q != y.mDigits.rend())
+        int borrow = 0;
+        while (i != a.mDigits.rend())
         {
-            int dif = carry;
-            if (p != x.mDigits.rend())
-            {
-                if (carry == (-1) && *p == 0 && !firstZero)
-                {
-                    dif = 9;
-                }
-
-                dif += *p;
-                ++p;
-                carry = 0;
-                if (*p == 0 && !firstZero)
-                {
-                    carry = -1;
-                }
-            }
-            if (q != y.mDigits.rend())
-            {
-                if (dif < *q)
-                {
-                    dif += 10;
-                    carry = -1;
-                }
-                dif -= *q;
-                ++q;
-            }
-            result.mDigits.push_back(dif);
-            if (*p == 0 && firstZero)
-            {
-                firstZero = false;
-            }
+            int dif;
         }
-        std::reverse(result.mDigits.begin(), result.mDigits.end());
-
-        return result;
     }
 
 public:
@@ -119,12 +102,12 @@ public:
     explicit BigInt(const std::string &strValue)
         : mIsNegative(false)
     {
-        size_t i = 0;
-
         if (strValue.empty())
         {
             throw std::runtime_error("BigInt: Incorrect string initializer");
         }
+
+        size_t i = 0;
         if (strValue[i] == '-' || strValue[i] == '+')
         {
             mIsNegative = strValue[i] == '-';
@@ -160,7 +143,6 @@ public:
             mIsNegative = false;
         }
     }
-    // use 1_000_000_000 дичную систему чтобы оптимизировать код
 };
 
 inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
@@ -197,12 +179,23 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
         r.mIsNegative = x.mIsNegative;
         return r;
     }
+    int cmp = BigInt::cmpAbsValues(x, y);
+    if (cmp == 0)
+    {
+        return BigInt();
+    }
+    if (cmp > 0)
+    {
+        BigInt r = BigInt::subAbsValues(x, y);
+        r.mIsNegative = x.mIsNegative;
+        return r;
+    }
+
+    BigInt r = BigInt::subAbsValues(y, x);
+    r.mIsNegative = y.mIsNegative;
+    return r;
 }
 
 inline BigInt operator-(const BigInt &x, const BigInt &y)
 {
-
-    BigInt r = BigInt::subAbsValues(x, y);
-    r.mIsNegative = false;
-    return r;
 }
