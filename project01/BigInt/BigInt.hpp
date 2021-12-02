@@ -12,8 +12,8 @@ class BigInt
     friend BigInt operator+(const BigInt &x, const BigInt &y);
     friend BigInt operator-(const BigInt &x, const BigInt &y);
     friend BigInt operator*(const BigInt &x, const BigInt &y);
-    friend BigInt &operator+=(const BigInt &x);
-    friend BigInt &operator-=(const BigInt &x);
+    friend void operator+=(BigInt &x, const BigInt &y);
+    friend void operator-=(BigInt &x, const BigInt &y);
     friend bool operator<(const BigInt &x, const BigInt &y);
     friend bool operator>(const BigInt &x, const BigInt &y);
     friend bool operator==(const BigInt &x, const BigInt &y);
@@ -126,6 +126,7 @@ class BigInt
     static BigInt mulEachDigit(const BigInt &x, int digit, int endZeros)
     {
         BigInt r;
+        r.mDigits.clear();
         auto i = x.mDigits.rbegin();
 
         int carry = 0;
@@ -362,22 +363,32 @@ inline BigInt operator*(const BigInt &x, const BigInt &y)
 
     BigInt sum;
     int endZeros = 0;
+    if (x == 0 || y == 0)
+    {
+        return BigInt();
+    }
 
     while (j != y.mDigits.rend())
     {
-        sum += BigInt::mulEachDigit(x, *j, endZeros);
+        BigInt t = BigInt::mulEachDigit(x, *j, endZeros);
+        sum += t;
         ++j;
         endZeros++;
+    }
+
+    if (sum != 0)
+    {
+        sum.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
     }
 
     return sum;
 }
 
-inline BigInt &operator+=(const BigInt &x)
+inline void operator+=(BigInt &x, const BigInt &y)
 {
-    BigInt r;
-    return r;
+    x = x + y;
 }
-inline BigInt &operator-=(const BigInt &x)
+inline void operator-=(BigInt &x, const BigInt &y)
 {
+    x = x - y;
 }
