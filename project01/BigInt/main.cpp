@@ -264,6 +264,8 @@ TEST_CASE("BigInt: '+' operator")
     // }
 }
 
+// SUBTRACTION OPERATOR TESTS
+
 TEST_CASE("BigInt: '-' operator")
 {
     std::ostringstream sout;
@@ -338,6 +340,8 @@ TEST_CASE("BigInt: '-' operator")
     //     }
     // }
 }
+
+// LESS THAN OPERATOR
 
 TEST_CASE("BigInt: '<' operator ")
 {
@@ -415,6 +419,9 @@ TEST_CASE("BigInt: '<' operator ")
         REQUIRE(sout.str() == "true");
     }
 }
+
+// GREATER THAN OPERATOR TEST
+
 TEST_CASE("BigInt: '>' operator ")
 {
     std::ostringstream sout;
@@ -428,6 +435,9 @@ TEST_CASE("BigInt: '>' operator ")
         REQUIRE(sout.str() == "false");
     }
 }
+
+// EQUAL TO OPERATOR TEST
+
 TEST_CASE("BigInt: '==' operator ")
 {
     std::ostringstream sout;
@@ -460,6 +470,9 @@ TEST_CASE("BigInt: '==' operator ")
         REQUIRE(sout.str() == "true");
     }
 }
+
+// NOT EQUAL TO OPERATOR
+
 TEST_CASE("BigInt: '!=' operator ")
 {
     std::ostringstream sout;
@@ -483,6 +496,9 @@ TEST_CASE("BigInt: '!=' operator ")
         REQUIRE(sout.str() == "true");
     }
 }
+
+// GREATER THAN OR EQUAL TO OPERATOR TEST
+
 TEST_CASE("BigInt: '>=' operator ")
 {
     std::ostringstream sout;
@@ -506,6 +522,9 @@ TEST_CASE("BigInt: '>=' operator ")
         REQUIRE(sout.str() == "false");
     }
 }
+
+//LESS THAN OR EQUAL TO OPERATOR
+
 TEST_CASE("BigInt: '<=' operator ")
 {
     std::ostringstream sout;
@@ -527,5 +546,29 @@ TEST_CASE("BigInt: '<=' operator ")
         sout << boolalpha << (x <= y);
 
         REQUIRE(sout.str() == "true");
+    }
+}
+
+TEST_CASE("BigInt: '*' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("3 * 4")
+    {
+        BigInt x(3);
+        BigInt y(4);
+
+        sout << (x * y);
+
+        REQUIRE(sout.str() == "12");
+    }
+    SUBCASE("123456 * 234567")
+    {
+        BigInt x(123456);
+        BigInt y(234567);
+
+        sout << (x * y);
+
+        REQUIRE(sout.str() == "28958703552");
     }
 }

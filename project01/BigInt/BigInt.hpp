@@ -11,6 +11,9 @@ class BigInt
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
     friend BigInt operator-(const BigInt &x, const BigInt &y);
+    friend BigInt operator*(const BigInt &x, const BigInt &y);
+    friend BigInt &operator+=(const BigInt &x);
+    friend BigInt &operator-=(const BigInt &x);
     friend bool operator<(const BigInt &x, const BigInt &y);
     friend bool operator>(const BigInt &x, const BigInt &y);
     friend bool operator==(const BigInt &x, const BigInt &y);
@@ -120,6 +123,33 @@ class BigInt
         return r;
     }
 
+    static BigInt mulEachDigit(const BigInt &x, int digit, int endZeros)
+    {
+        BigInt r;
+        auto i = x.mDigits.rbegin();
+
+        int carry = 0;
+        while (i != x.mDigits.rend())
+        {
+            int d = *i * digit;
+            r.mDigits.push_back((d + carry) % 10);
+            carry = (d + carry) / 10;
+            ++i;
+        }
+        if (carry != 0)
+        {
+            r.mDigits.push_back(carry);
+        }
+        std::reverse(r.mDigits.begin(), r.mDigits.end());
+
+        for (int k = 0; k < endZeros; k++)
+        {
+            r.mDigits.push_back(0);
+        }
+
+        return r;
+    }
+
 public:
     BigInt()
         : mIsNegative(false)
@@ -181,9 +211,8 @@ public:
 inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
 {
     std::string inputString;
-    sin >> inputString;
+    getline(sin, inputString);
 
-    sin >> inputString;
     BigInt y(inputString);
     x = y;
 
@@ -325,4 +354,30 @@ inline bool operator>=(const BigInt &x, const BigInt &y)
 inline bool operator<=(const BigInt &x, const BigInt &y)
 {
     return !(x > y);
+}
+
+inline BigInt operator*(const BigInt &x, const BigInt &y)
+{
+    auto j = y.mDigits.rbegin();
+
+    BigInt sum;
+    int endZeros = 0;
+
+    while (j != y.mDigits.rend())
+    {
+        sum += BigInt::mulEachDigit(x, *j, endZeros);
+        ++j;
+        endZeros++;
+    }
+
+    return sum;
+}
+
+inline BigInt &operator+=(const BigInt &x)
+{
+    BigInt r;
+    return r;
+}
+inline BigInt &operator-=(const BigInt &x)
+{
 }
