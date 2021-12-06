@@ -571,14 +571,14 @@ TEST_CASE("BigInt: '*' operator ")
 
     //     REQUIRE(sout.str() == "120");
     // }
-    SUBCASE("-3 * 40")
+    SUBCASE("-499 * *499")
     {
-        BigInt x(-3);
-        BigInt y(40);
+        BigInt x(499);
+        BigInt y(499);
 
         sout << (x * y);
 
-        REQUIRE(sout.str() == "-120");
+        REQUIRE(sout.str() == "249001");
     }
     // SUBCASE("0 * -4000")
     // {
@@ -598,19 +598,19 @@ TEST_CASE("BigInt: '*' operator ")
 
     //     REQUIRE(sout.str() == "28958703552");
     // }
-    // SUBCASE("Case 4: [-500, 500]")
-    // {
-    //     for (int i = -500; i < 500; i++)
-    //     {
-    //         for (int j = -500; j < 500; j++)
-    //         {
-    //             BigInt x = i;
-    //             BigInt y = j;
-
-    //             ostringstream sout2;
-    //             sout2 << x * y;
-    //             REQUIRE(sout2.str() == to_string(i * j));
-    //         }
-    //     }
-    // }
+    /*SUBCASE("Case 4: [-500, 500]")
+    {
+        for (int i = -500; i < 500; i++)
+        {
+            for (int j = -500; j < 500; j++)
+            {
+                BigInt x(i);
+                BigInt y(j);
+                ostringstream sout2;
+                sout2 << x * y;
+                std::cout << i << " " << j << "\n";
+                REQUIRE(sout2.str() == to_string(i * j));
+            }
+        }
+    }*/
 }

@@ -107,8 +107,9 @@ class BigInt
         BigInt r;
         r.mDigits.resize(x.mDigits.size() + y.mDigits.size());
 
-        auto i = x.mDigits.rbegin();
         auto j = y.mDigits.rbegin();
+
+        auto i = x.mDigits.rbegin();
         int shift = 0;
         int carry, curShift;
 
@@ -130,10 +131,11 @@ class BigInt
             }
             shift++;
             ++j;
+            i = x.mDigits.rbegin();
         }
         for (auto k : r.mDigits)
         {
-            std::cout << k;
+            // std::cout << k;
         }
         if (r.mDigits.front() == 0)
         {
@@ -396,19 +398,16 @@ inline bool operator<=(const BigInt &x, const BigInt &y)
 
 inline BigInt operator*(const BigInt &x, const BigInt &y)
 {
-    BigInt r;
+
     if (x == 0 || y == 0)
     {
         return BigInt();
     }
 
-    r = BigInt::mulAbsValues(x, y);
+    BigInt r(BigInt::mulAbsValues(x, y));
 
-    if (r != 0)
-    {
-        r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
-    }
-
+    r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
+    std::cout << r << "\n";
     return r;
 }
 
