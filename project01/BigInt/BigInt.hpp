@@ -5,6 +5,8 @@
 #include <string>
 #include <stdexcept>
 
+#define BASE 10
+
 class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
@@ -23,29 +25,6 @@ class BigInt
 
     std::vector<int> mDigits;
     bool mIsNegative;
-
-    static int cmpAbsValues(const BigInt &a, const BigInt &b)
-    {
-        if (a.mDigits.size() > b.mDigits.size())
-        {
-            return 1;
-        }
-
-        if (a.mDigits.size() < b.mDigits.size())
-        {
-            return -1;
-        }
-
-        for (size_t i = 0; i < a.mDigits.size(); ++i)
-        {
-            if (a.mDigits[i] != b.mDigits[i])
-            {
-                return a.mDigits[i] - b.mDigits[i];
-            }
-        }
-
-        return 0;
-    }
 
     static BigInt addAbsValues(const BigInt &x, const BigInt &y)
     {
@@ -123,32 +102,90 @@ class BigInt
         return r;
     }
 
-    static BigInt mulEachDigit(const BigInt &x, int digit, int endZeros)
+    static BigInt mulAbsValues(const BigInt &x, const BigInt &y)
     {
         BigInt r;
-        r.mDigits.clear();
-        auto i = x.mDigits.rbegin();
+        r.mDigits.resize(x.mDigits.size() + y.mDigits.size());
 
-        int carry = 0;
-        while (i != x.mDigits.rend())
+        auto i = x.mDigits.rbegin();
+        auto j = y.mDigits.rbegin();
+        int shift = 0;
+        int carry, curShift;
+
+        while (j != y.mDigits.rend())
         {
-            int d = *i * digit;
-            r.mDigits.push_back((d + carry) % 10);
-            carry = (d + carry) / 10;
+            carry = 0;
+            curShift = shift;
+            while (i != x.mDigits.rend())
+            {
+                int s = *i * *j + carry;
+                BigInt::addDigit(r, s % 10, curShift);
+                carry = s / 10;
+                curShift++;
+                ++i;
+            }
+            if (carry != 0)
+            {
+                BigInt::addDigit(r, carry, curShift);
+            }
+            shift++;
+            ++j;
+        }
+        for (auto k : r.mDigits)
+        {
+            std::cout << k;
+        }
+        if (r.mDigits.front() == 0)
+        {
+            r.mDigits.erase(r.mDigits.begin());
+        }
+        return r;
+    }
+
+    static void addDigit(BigInt &r, int d, int shift)
+    {
+        int carry = 0;
+        auto i = r.mDigits.rbegin();
+        i += shift;
+        int sum = *i + d;
+        *i = sum % 10;
+        carry = sum / 10;
+
+        while (carry != 0)
+        {
             ++i;
+            sum += (*i + carry);
+            *i = sum % 10;
+            carry = sum / 10;
+            sum = 0;
         }
         if (carry != 0)
         {
-            r.mDigits.push_back(carry);
+            *(i + shift + 1) = carry;
         }
-        std::reverse(r.mDigits.begin(), r.mDigits.end());
+    }
 
-        for (int k = 0; k < endZeros; k++)
+    static int cmpAbsValues(const BigInt &a, const BigInt &b)
+    {
+        if (a.mDigits.size() > b.mDigits.size())
         {
-            r.mDigits.push_back(0);
+            return 1;
         }
 
-        return r;
+        if (a.mDigits.size() < b.mDigits.size())
+        {
+            return -1;
+        }
+
+        for (size_t i = 0; i < a.mDigits.size(); ++i)
+        {
+            if (a.mDigits[i] != b.mDigits[i])
+            {
+                return a.mDigits[i] - b.mDigits[i];
+            }
+        }
+
+        return 0;
     }
 
 public:
@@ -359,29 +396,20 @@ inline bool operator<=(const BigInt &x, const BigInt &y)
 
 inline BigInt operator*(const BigInt &x, const BigInt &y)
 {
-    auto j = y.mDigits.rbegin();
-
-    BigInt sum;
-    int endZeros = 0;
+    BigInt r;
     if (x == 0 || y == 0)
     {
         return BigInt();
     }
 
-    while (j != y.mDigits.rend())
+    r = BigInt::mulAbsValues(x, y);
+
+    if (r != 0)
     {
-        BigInt t = BigInt::mulEachDigit(x, *j, endZeros);
-        sum += t;
-        ++j;
-        endZeros++;
+        r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
     }
 
-    if (sum != 0)
-    {
-        sum.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
-    }
-
-    return sum;
+    return r;
 }
 
 inline void operator+=(BigInt &x, const BigInt &y)
