@@ -11,9 +11,13 @@ class BigInt
 {
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
+    friend BigInt abs(BigInt x);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
     friend BigInt operator-(const BigInt &x, const BigInt &y);
     friend BigInt operator*(const BigInt &x, const BigInt &y);
+    friend BigInt operator*(const BigInt &x, int y);
+    friend BigInt operator/(BigInt &x, BigInt &y);
+    //friend void operator=(BigInt &x, BigInt &y);
     friend void operator+=(BigInt &x, const BigInt &y);
     friend void operator-=(BigInt &x, const BigInt &y);
     friend bool operator<(const BigInt &x, const BigInt &y);
@@ -108,35 +112,31 @@ class BigInt
         r.mDigits.resize(x.mDigits.size() + y.mDigits.size());
 
         auto j = y.mDigits.rbegin();
-
         auto i = x.mDigits.rbegin();
         int shift = 0;
         int carry, curShift;
 
-        while (j != y.mDigits.rend())
+        for (; j != y.mDigits.rend(); j++)
         {
             carry = 0;
             curShift = shift;
-            while (i != x.mDigits.rend())
+
+            for (; i != x.mDigits.rend(); i++)
             {
                 int s = *i * *j + carry;
                 BigInt::addDigit(r, s % 10, curShift);
                 carry = s / 10;
                 curShift++;
-                ++i;
             }
             if (carry != 0)
             {
                 BigInt::addDigit(r, carry, curShift);
             }
             shift++;
-            ++j;
+
             i = x.mDigits.rbegin();
         }
-        for (auto k : r.mDigits)
-        {
-            // std::cout << k;
-        }
+
         if (r.mDigits.front() == 0)
         {
             r.mDigits.erase(r.mDigits.begin());
@@ -155,16 +155,108 @@ class BigInt
 
         while (carry != 0)
         {
+            sum = 0;
             ++i;
             sum += (*i + carry);
             *i = sum % 10;
             carry = sum / 10;
-            sum = 0;
         }
         if (carry != 0)
         {
-            *(i + shift + 1) = carry;
+            *(i + shift) = carry;
         }
+    }
+
+    static BigInt divAbsValues(const BigInt &x, const BigInt &y)
+    {
+        BigInt r;
+        r.mDigits.clear();
+
+        auto i = x.mDigits.begin();
+        BigInt divident;
+        divident.mDigits.clear();
+
+        while (i != x.mDigits.end())
+        {
+            int count = 0;
+            while (divident < y && i < x.mDigits.end())
+            {
+                divident.mDigits.push_back(*i);
+                if (divident == BigInt("0"))
+                {
+                    divident.mDigits.clear();
+                    r.mDigits.push_back(0);
+                    i++;
+                    continue;
+                }
+                i++;
+                count++;
+                if (count > (int)y.mDigits.size())
+                {
+                    r.mDigits.push_back(0);
+                }
+            }
+            if (divident == BigInt("0") || divident.mDigits.empty())
+            {
+                break;
+            }
+            std::pair<int, BigInt> quotientRemainder = BigInt::findQuotientRemainder(divident, abs(y));
+            r.mDigits.push_back(quotientRemainder.first);
+            divident.mDigits = (quotientRemainder.second).mDigits;
+            if (divident == BigInt("0"))
+            {
+                divident.mDigits.clear();
+            }
+            // divident.mDigits.clear();
+            // divident.mDigits.push_back(quotientRemainder.second);
+
+            // think where u need i++
+        }
+        if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
+        {
+            r.mDigits.erase(r.mDigits.begin(), r.mDigits.begin() + 1);
+        }
+        return r;
+    }
+
+    //if error -> add std::
+    static std::pair<int, BigInt> findQuotientRemainder(const BigInt &divident, const BigInt &divisor)
+    {
+        int r = 0;
+        for (int i = 0; i <= 10; i++)
+        {
+            if (divisor * i > divident)
+            {
+                r = i;
+                break;
+            }
+        }
+        return {r - 1, divident - (divisor * (r - 1))};
+
+        // BINARY_SEARCH APPROACH
+
+        // int r = 5;
+        // int remainder;
+        // bool increses = (divisor * 5 > divident) ? false : true;
+
+        // for (; (r > 0 && r < 10);)
+        // {
+        //     (increses) ? r++ : r--;
+
+        //     if (divisor * 5 == divident)
+        //     {
+        //         return {5, BigInt()};
+        //     }
+        //     if (r < 5 && divisor * r <= divident)
+        //     {
+        //         return {r, divident - divisor * r};
+        //     }
+        //     if (r > 5 && (divisor * r >= divident))
+        //     {
+        //         return {(r - 1), (divident - divisor * r)};
+        //     }
+        // }
+        // return {0, BigInt()};
     }
 
     static int cmpAbsValues(const BigInt &a, const BigInt &b)
@@ -245,6 +337,13 @@ public:
         {
             mIsNegative = false;
         }
+    }
+
+    // temporary solution
+    void operator=(const BigInt &otherBigInt)
+    {
+        mDigits = otherBigInt.mDigits;
+        mIsNegative = otherBigInt.mIsNegative;
     }
 };
 
@@ -343,6 +442,8 @@ inline BigInt operator-(const BigInt &x, const BigInt &y)
             return r;
         }
     }
+
+    return BigInt();
 }
 
 inline bool operator<(const BigInt &x, const BigInt &y)
@@ -407,7 +508,7 @@ inline BigInt operator*(const BigInt &x, const BigInt &y)
     BigInt r(BigInt::mulAbsValues(x, y));
 
     r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
-    std::cout << r << "\n";
+
     return r;
 }
 
@@ -418,4 +519,39 @@ inline void operator+=(BigInt &x, const BigInt &y)
 inline void operator-=(BigInt &x, const BigInt &y)
 {
     x = x - y;
+}
+
+BigInt abs(BigInt x)
+{
+    x.mIsNegative = false;
+    return x;
+}
+
+inline BigInt operator/(BigInt &x, BigInt &y)
+{
+    // /0
+    if (y == 0)
+    {
+        throw std::runtime_error("Impossible to divide 0");
+    }
+    bool temp;
+    BigInt r;
+
+    temp = (x.mIsNegative == y.mIsNegative) ? false : true;
+
+    // r = (BigInt::divAbsValues(x, y));
+    r = (BigInt::divAbsValues(abs(x), abs(y)));
+    if (r != 0)
+    {
+        r.mIsNegative = temp;
+    }
+    return r;
+}
+
+inline BigInt operator*(const BigInt &x, int y)
+{
+    // temporary implimaentation without optimization
+
+    BigInt yb(y);
+    return x * yb;
 }
