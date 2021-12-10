@@ -507,6 +507,12 @@ inline BigInt operator*(const BigInt &x, const BigInt &y)
     return r;
 }
 
+inline BigInt operator*(const BigInt &x, int y)
+{
+    BigInt yb(y);
+    return x * yb;
+}
+
 inline void operator+=(BigInt &x, const BigInt &y)
 {
     x = x + y;
@@ -539,12 +545,4 @@ inline BigInt operator/(const BigInt &x, const BigInt &y)
         r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
     }
     return r;
-}
-
-inline BigInt operator*(const BigInt &x, int y)
-{
-    // temporary implimaentation without optimization
-
-    BigInt yb(y);
-    return x * yb;
 }
