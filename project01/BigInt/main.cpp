@@ -627,10 +627,10 @@ TEST_CASE("BigInt: '/' operator ")
 
         REQUIRE(sout.str() == "-2");
     }
-    SUBCASE("-100 / 100")
+    SUBCASE("100 / -100")
     {
-        BigInt x(-100);
-        BigInt y(100);
+        BigInt x(100);
+        BigInt y(-100);
 
         sout << (x / y);
 
@@ -655,24 +655,30 @@ TEST_CASE("BigInt: '/' operator ")
 
         REQUIRE(sout.str() == "0");
     }
-
-    SUBCASE("Case 4: [-500, 500]")
+    SUBCASE("23 / 0")
     {
-        for (int i = 0; i < 100; i++)
-        {
-            for (int j = 0; j < 100; j++)
-            {
-                if (j == 0)
-                {
-                    continue;
-                }
-                //std::cout << i << "    " << j << std ::endl;
-                BigInt x(i);
-                BigInt y(j);
-                ostringstream sout2;
-                sout2 << x / y;
-                REQUIRE(sout2.str() == to_string(i / j));
-            }
-        }
+        BigInt x(23);
+        BigInt y(0);
+
+        REQUIRE_THROWS_AS(x / y, runtime_error);
     }
+
+    // SUBCASE("Case 4: [-500, 500]")
+    // {
+    //     for (int i = -500; i < 500; i++)
+    //     {
+    //         for (int j = -500; j < 500; j++)
+    //         {
+    //             if (j == 0)
+    //             {
+    //                 continue;
+    //             }
+    //             BigInt x(i);
+    //             BigInt y(j);
+    //             ostringstream sout2;
+    //             sout2 << x / y;
+    //             REQUIRE(sout2.str() == to_string(i / j));
+    //         }
+    //     }
+    // }
 }

@@ -16,7 +16,7 @@ class BigInt
     friend BigInt operator-(const BigInt &x, const BigInt &y);
     friend BigInt operator*(const BigInt &x, const BigInt &y);
     friend BigInt operator*(const BigInt &x, int y);
-    friend BigInt operator/(BigInt &x, BigInt &y);
+    friend BigInt operator/(const BigInt &x, const BigInt &y);
     //friend void operator=(BigInt &x, BigInt &y);
     friend void operator+=(BigInt &x, const BigInt &y);
     friend void operator-=(BigInt &x, const BigInt &y);
@@ -207,10 +207,6 @@ class BigInt
             {
                 divident.mDigits.clear();
             }
-            // divident.mDigits.clear();
-            // divident.mDigits.push_back(quotientRemainder.second);
-
-            // think where u need i++
         }
         if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
         {
@@ -219,7 +215,6 @@ class BigInt
         return r;
     }
 
-    //if error -> add std::
     static std::pair<int, BigInt> findQuotientRemainder(const BigInt &divident, const BigInt &divisor)
     {
         int r = 0;
@@ -521,29 +516,27 @@ inline void operator-=(BigInt &x, const BigInt &y)
     x = x - y;
 }
 
-BigInt abs(BigInt x)
+BigInt abs(const BigInt x)
 {
-    x.mIsNegative = false;
-    return x;
+    //x.mIsNegative = false;
+    BigInt y;
+    y.mDigits = x.mDigits;
+    y.mIsNegative = false;
+    return y;
 }
 
-inline BigInt operator/(BigInt &x, BigInt &y)
+inline BigInt operator/(const BigInt &x, const BigInt &y)
 {
-    // /0
     if (y == 0)
     {
-        throw std::runtime_error("Impossible to divide 0");
+        throw std::runtime_error("Impossible to divide to 0");
     }
-    bool temp;
-    BigInt r;
 
-    temp = (x.mIsNegative == y.mIsNegative) ? false : true;
+    BigInt r = (BigInt::divAbsValues(abs(x), abs(y)));
 
-    // r = (BigInt::divAbsValues(x, y));
-    r = (BigInt::divAbsValues(abs(x), abs(y)));
     if (r != 0)
     {
-        r.mIsNegative = temp;
+        r.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
     }
     return r;
 }
