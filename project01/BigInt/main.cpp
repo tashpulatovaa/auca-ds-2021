@@ -682,3 +682,73 @@ TEST_CASE("BigInt: '/' operator ")
     //     }
     // }
 }
+
+TEST_CASE("BigInt: '%' operator ")
+{
+    std::ostringstream sout;
+
+    SUBCASE("-10 % 5")
+    {
+        BigInt x(-10);
+        BigInt y(5);
+
+        sout << (x % y);
+
+        REQUIRE(sout.str() == "0");
+    }
+    SUBCASE("10 % 7")
+    {
+        BigInt x(10);
+        BigInt y(7);
+
+        sout << (x % y);
+
+        REQUIRE(sout.str() == "3");
+    }
+
+    SUBCASE("-123 % -11")
+    {
+        BigInt x(-123);
+        BigInt y(-11);
+
+        sout << (x % y);
+
+        REQUIRE(sout.str() == "-2");
+    }
+    SUBCASE("3 % 5")
+    {
+        BigInt x(3);
+        BigInt y(5);
+
+        sout << (x % y);
+
+        REQUIRE(sout.str() == "3");
+    }
+    SUBCASE("23 % 0")
+    {
+        BigInt x(23);
+        BigInt y(0);
+
+        REQUIRE_THROWS_AS(x / y, runtime_error);
+    }
+
+    SUBCASE("Case 4: [-500, 500]")
+    {
+        for (int i = -500; i < 500; i++)
+        {
+            for (int j = -500; j < 500; j++)
+            {
+                if (j == 0)
+                {
+                    continue;
+                }
+                BigInt x(i);
+                BigInt y(j);
+                ostringstream sout2;
+                sout2 << x % y;
+                std::cout << x << "  " << y << " " << sout2.str() << endl;
+                REQUIRE(sout2.str() == to_string(i % j));
+            }
+        }
+    }
+}
