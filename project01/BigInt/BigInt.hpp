@@ -201,7 +201,6 @@ class BigInt
             }
 
             quotientRemainder = BigInt::findQuotientRemainder(divident, abs(y));
-            // quotientRemainder = BigInt::findQuotientRemainder(divident, abs(y));
             r.mDigits.push_back(quotientRemainder.first);
             if ((!r.mDigits.empty()) && divident < abs(y))
             {
@@ -294,7 +293,6 @@ class BigInt
                 return a.mDigits[i] - b.mDigits[i];
             }
         }
-
         return 0;
     }
 
@@ -355,8 +353,20 @@ public:
         }
     }
 
-    // temporary solution
-    // BigInt &operator=(const BigInt &otherBigInt) = default;
+    BigInt operator++() // prefix
+    {
+        BigInt temp;
+        this->mDigits[this->mDigits.size() - 1]++;
+        //clean();
+        return temp;
+    }
+
+    BigInt operator++(int) // postfix
+    {
+        BigInt temp;
+        temp = *this + BigInt("1");
+        return temp;
+    }
 };
 
 inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
@@ -478,6 +488,37 @@ inline BigInt operator*(const BigInt &x, int y)
     BigInt yb(y);
     return x * yb;
 }
+inline BigInt operator/(const BigInt &x, const BigInt &y)
+{
+    if (y == 0)
+    {
+        throw std::runtime_error("Impossible to divide to 0");
+    }
+    std::pair<BigInt, BigInt> r;
+    r = (BigInt::divAbsValues(abs(x), abs(y)));
+
+    if (r.first != 0)
+    {
+        r.first.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
+    }
+    return r.first;
+}
+
+inline BigInt operator%(const BigInt &x, const BigInt &y)
+{
+    if (y == 0)
+    {
+        throw std::runtime_error("Impossible to divide to 0");
+    }
+    std::pair<BigInt, BigInt> r;
+    r = (BigInt::divAbsValues(abs(x), abs(y)));
+
+    if (r.second != 0)
+    {
+        r.second.mIsNegative = x.mIsNegative;
+    }
+    return r.second;
+}
 
 inline bool operator<(const BigInt &x, const BigInt &y)
 {
@@ -512,7 +553,6 @@ inline bool operator==(const BigInt &x, const BigInt &y)
     {
         return (BigInt::cmpAbsValues(x, y) == 0);
     }
-
     return false;
 }
 
@@ -520,7 +560,6 @@ inline bool operator!=(const BigInt &x, const BigInt &y)
 {
     return !(x == y);
 }
-
 inline bool operator>=(const BigInt &x, const BigInt &y)
 {
     return !(x < y);
@@ -529,7 +568,6 @@ inline bool operator<=(const BigInt &x, const BigInt &y)
 {
     return !(x > y);
 }
-
 inline void operator+=(BigInt &x, const BigInt &y)
 {
     x = x + y;
@@ -538,53 +576,23 @@ inline void operator-=(BigInt &x, const BigInt &y)
 {
     x = x - y;
 }
-inline void operator/=(BigInt &x, const BigInt &y)
-{
-    x = x / y;
-}
 inline void operator*=(BigInt &x, const BigInt &y)
 {
     x = x * y;
 }
+inline void operator/=(BigInt &x, const BigInt &y)
+{
+    x = x / y;
+}
+inline void operator%=(BigInt &x, const BigInt &y)
+{
+    x = x % y;
+}
 
 BigInt abs(const BigInt x)
 {
-    //x.mIsNegative = false;
     BigInt y;
     y.mDigits = x.mDigits;
     y.mIsNegative = false;
     return y;
-}
-
-inline BigInt operator/(const BigInt &x, const BigInt &y)
-{
-    if (y == 0)
-    {
-        throw std::runtime_error("Impossible to divide to 0");
-    }
-    std::pair<BigInt, BigInt> r;
-    r = (BigInt::divAbsValues(abs(x), abs(y)));
-
-    if (r.first != 0)
-    {
-        r.first.mIsNegative = (x.mIsNegative == y.mIsNegative) ? false : true;
-    }
-    return r.first;
-}
-inline BigInt operator%(const BigInt &x, const BigInt &y)
-{
-    if (y == 0)
-    {
-        throw std::runtime_error("Impossible to divide to 0");
-    }
-    std::pair<BigInt, BigInt> r;
-    r = (BigInt::divAbsValues(abs(x), abs(y)));
-
-    if (r.second != 0)
-    {
-        r.second.mIsNegative = x.mIsNegative;
-        // r.second.mIsNegative = (((!x.mIsNegative) && (!y.mIsNegative)) || ((!x.mIsNegative) && (y.mIsNegative))) ? false : true;
-        //r.second.mIsNegative = ((!x.mIsNegative) && (!y.mIsNegative)) ? false : true;
-    }
-    return r.second;
 }
