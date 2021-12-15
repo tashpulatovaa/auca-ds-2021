@@ -9,8 +9,10 @@
 
 class BigInt
 {
+    // PRIVATE FIELDS AND METHODS
+
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
-    friend std::istringstream &operator>>(std::istringstream &sin, BigInt &x);
+    friend std::istream &operator>>(std::istream &inp, BigInt &x);
     friend BigInt abs(BigInt x);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
     friend BigInt operator-(const BigInt &x, const BigInt &y);
@@ -296,6 +298,8 @@ class BigInt
         return 0;
     }
 
+    // CONSTRUCTOR
+
 public:
     BigInt()
         : mIsNegative(false)
@@ -354,16 +358,7 @@ public:
     }
 };
 
-inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
-{
-    std::string inputString;
-    getline(sin, inputString);
-
-    BigInt y(inputString);
-    x = y;
-
-    return sin;
-}
+// OPERATOR OVERLOADINGS
 
 inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 {
@@ -377,6 +372,45 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
         out << digit;
     }
     return out;
+}
+
+inline std::istream &operator>>(std::istream &inp, BigInt &x)
+{
+    char ch;
+    if (!(inp >> ch))
+    {
+        return inp;
+    }
+
+    if (!(ch == '+' || ch == '-' || isdigit(ch)))
+    {
+        inp.putback(ch);
+        inp.setstate(std::ios_base::failbit);
+        return inp;
+    }
+
+    std::string s;
+    s += ch;
+    while (inp.get(ch) && isdigit(ch))
+    {
+        s += ch;
+    }
+
+    if (inp)
+    {
+        inp.putback(ch);
+    }
+
+    if (s.size() == 1 && (s[0] == '+' || s[0] == '-'))
+    {
+        inp.setstate(std::ios_base::failbit);
+        return inp;
+    }
+
+    x = BigInt(s);
+
+    inp.clear();
+    return inp;
 }
 
 inline BigInt operator+(const BigInt &x, const BigInt &y)
@@ -579,7 +613,7 @@ BigInt &operator++(BigInt &x)
     x += 1;
     return x;
 }
-BigInt operator++(BigInt &x, int y)
+BigInt operator++(BigInt &x, int)
 {
     BigInt a = x;
     x += 1;
@@ -590,7 +624,7 @@ BigInt operator--(BigInt &x)
     x = x - 1;
     return x;
 }
-BigInt operator--(BigInt &x, int y)
+BigInt operator--(BigInt &x, int)
 {
     BigInt a = x;
     x = x - 1;

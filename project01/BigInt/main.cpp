@@ -116,75 +116,94 @@ TEST_CASE("Check constructor with integer parameter")
 
 // TESTING INPUT OPERATOR
 
-TEST_CASE("BigInt: Input ceses")
+TEST_CASE("BigInt input operator")
 {
-    std::ostringstream sout;
-    SUBCASE("Case 1: Proper input")
+    SUBCASE("123")
     {
+        istringstream sinp("123");
         BigInt x;
-        std::istringstream sin("12345");
+        sinp >> x;
+        REQUIRE(x == 123);
 
-        sin >> x;
-        sout << x;
-
-        REQUIRE(sout.str() == "12345");
+        bool state = static_cast<bool>(sinp);
+        REQUIRE(state);
     }
 
-    SUBCASE("Case 2: input with plus sign")
+    SUBCASE("   -123")
     {
-        std::istringstream sin("+1234");
+        istringstream sinp("   -123");
         BigInt x;
-        sin >> x;
-        sout << x;
+        sinp >> x;
+        REQUIRE(x == -123);
 
-        REQUIRE(sout.str() == "1234");
+        bool state = static_cast<bool>(sinp);
+        REQUIRE(state);
     }
 
-    SUBCASE("Case 2: input with minus sign")
+    SUBCASE("-  123")
     {
-        std::istringstream sin("-1234");
+        istringstream sinp("-  123");
         BigInt x;
-        sin >> x;
-        sout << x;
-
-        REQUIRE(sout.str() == "-1234");
+        sinp >> x;
+        bool state = static_cast<bool>(sinp);
+        REQUIRE_FALSE(state);
     }
 
-    SUBCASE("Case 2: input with other signs")
+    SUBCASE("   ")
     {
-        std::istringstream sin("&1234");
-        BigInt y;
-        REQUIRE_THROWS_AS(sin >> y, runtime_error);
+        istringstream sinp("   ");
+        BigInt x;
+        sinp >> x;
+        bool state = static_cast<bool>(sinp);
+        REQUIRE_FALSE(state);
     }
 
-    SUBCASE("Case 3: 00000123")
+    SUBCASE("   X")
     {
-        std::istringstream sin("00000123");
+        istringstream sinp("    X");
         BigInt x;
-        sin >> x;
-        sout << x;
-
-        REQUIRE(sout.str() == "123");
+        sinp >> x;
+        bool state = static_cast<bool>(sinp);
+        REQUIRE_FALSE(state);
+        sinp.clear();
+        char ch;
+        sinp >> ch;
+        REQUIRE(ch == 'X');
     }
 
-    SUBCASE("Case 4: 0000000")
+    SUBCASE("-")
     {
-        std::istringstream sin("00000");
+        istringstream sinp("-");
         BigInt x;
-        sin >> x;
-        sout << x;
-
-        REQUIRE(sout.str() == "0");
+        sinp >> x;
+        bool state = static_cast<bool>(sinp);
+        REQUIRE_FALSE(state);
     }
 
-    SUBCASE("Case 5: -0")
+    SUBCASE("123+123")
     {
-        std::istringstream sin("-0");
+        istringstream sinp("123+123");
         BigInt x;
-        sin >> x;
-        sout << x;
+        sinp >> x;
+        REQUIRE(x == 123);
+        string rest;
+        getline(sinp, rest);
+        bool state = static_cast<bool>(sinp);
+        REQUIRE(state);
+        REQUIRE(rest == "+123");
+    }
 
-        REQUIRE(sout.str() == "0");
+    SUBCASE("1 + 2 + 3 + 4 + 5")
+    {
+        istringstream sinp("1 2 3 4 5");
+        BigInt r;
+        for (int x; sinp >> x;)
+        {
+            r += x;
+        }
+
+        REQUIRE(r == 15);
+        REQUIRE(sinp.eof());
     }
 }
 
