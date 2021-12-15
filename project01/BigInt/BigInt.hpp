@@ -589,6 +589,35 @@ inline void operator%=(BigInt &x, const BigInt &y)
     x = x % y;
 }
 
+BigInt &operator++(BigInt &x)
+{
+    x += 1;
+    return x;
+}
+
+// BigInt &operator++(BigInt &x)
+// {
+//     x += 1;
+//     return x;
+// }
+// BigInt operator++(BigInt &x, int y)
+// {
+//     BigInt a = x;
+//     x += 1;
+//     return a;
+// }
+// BigInt operator--(BigInt &x)
+// {
+//     x = x - 1;
+//     return x;
+// }
+// BigInt operator--(BigInt &x, int y)
+// {
+//     BigInt a = x;
+//     x = x - 1;
+//     return a;
+// }
+
 BigInt abs(const BigInt x)
 {
     BigInt y;
