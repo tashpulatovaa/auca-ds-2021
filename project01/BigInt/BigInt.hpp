@@ -352,21 +352,6 @@ public:
             mIsNegative = false;
         }
     }
-
-    BigInt operator++() // prefix
-    {
-        BigInt temp;
-        this->mDigits[this->mDigits.size() - 1]++;
-        //clean();
-        return temp;
-    }
-
-    BigInt operator++(int) // postfix
-    {
-        BigInt temp;
-        temp = *this + BigInt("1");
-        return temp;
-    }
 };
 
 inline std::istringstream &operator>>(std::istringstream &sin, BigInt &x)
@@ -594,29 +579,23 @@ BigInt &operator++(BigInt &x)
     x += 1;
     return x;
 }
-
-// BigInt &operator++(BigInt &x)
-// {
-//     x += 1;
-//     return x;
-// }
-// BigInt operator++(BigInt &x, int y)
-// {
-//     BigInt a = x;
-//     x += 1;
-//     return a;
-// }
-// BigInt operator--(BigInt &x)
-// {
-//     x = x - 1;
-//     return x;
-// }
-// BigInt operator--(BigInt &x, int y)
-// {
-//     BigInt a = x;
-//     x = x - 1;
-//     return a;
-// }
+BigInt operator++(BigInt &x, int y)
+{
+    BigInt a = x;
+    x += 1;
+    return a;
+}
+BigInt operator--(BigInt &x)
+{
+    x = x - 1;
+    return x;
+}
+BigInt operator--(BigInt &x, int y)
+{
+    BigInt a = x;
+    x = x - 1;
+    return a;
+}
 
 BigInt abs(const BigInt x)
 {
