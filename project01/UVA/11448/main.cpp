@@ -1,11 +1,15 @@
+#include <bits/stdc++.h>
+
+template <typename C>
+int sz(const C &c) { return static_cast<int>(c.size()); }
+
 #ifndef BIGINT_HPP
 #define BIGINT_HPP
 
-#include <vector>
-#include <iosfwd>
-#include <string>
-#include <stdexcept>
-#include <cctype>
+// #include <vector>
+// #include <iosfwd>
+// #include <string>
+// #include <stdexcept>
 
 #define BASE 10
 
@@ -642,3 +646,24 @@ BigInt abs(const BigInt x)
 }
 
 #endif
+
+using namespace std;
+
+int main()
+{
+    iostream::sync_with_stdio(false);
+
+    int tests;
+    cin >> tests;
+
+    for (int test = 0; test < tests; test++)
+    {
+        BigInt benefit, cost, result;
+
+        cin >> benefit >> cost;
+
+        result = benefit - cost;
+
+        cout << result << "\n";
+    }
+}
