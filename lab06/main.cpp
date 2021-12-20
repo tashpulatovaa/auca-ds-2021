@@ -67,7 +67,6 @@ void p01()
         cout << "-1 not found" << endl;
     }
 }
-
 void p02()
 {
     IsEven functor;
@@ -103,6 +102,28 @@ void p03()
     if (it != end(v))
     {
         cout << "The positin of first number greater than " << x << " is " << it - begin(v) << " " << *it << endl;
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+}
+void p04()
+{
+    vector<int> v;
+
+    int x;
+    while (cin >> x)
+    {
+        v.push_back(x);
+    }
+    //auto it = min_element(begin(v), end(v));
+    auto it = auMinElement(begin(v), end(v));
+
+    if (it != end(v))
+    {
+        cout << "The positin of the min element in vector "
+             << " is " << it - begin(v) << " " << *it << endl;
     }
     else
     {
@@ -219,36 +240,27 @@ void p09()
         cout << get<0>(e) << " " << get<1>(e) << " " << get<2>(e) << "\n";
     }
 }
-void p04()
+void p10()
 {
-    vector<int> v;
-
-    int x;
-    while (cin >> x)
+    vector<int> v = {0, 4, 5, 10, 12, 20, 25, 40};
+    // for (int x; cin >> x;)
+    // {
+    //     cout << (binary_search(begin(v), end(v), x) ? "yes" : "no") << endl;
+    // }
+    for (int x; cin >> x;)
     {
-        v.push_back(x);
-    }
-    //auto it = min_element(begin(v), end(v));
-    auto it = auMinElement(begin(v), end(v));
-
-    if (it != end(v))
-    {
-        cout << "The positin of the min element in vector "
-             << " is " << it - begin(v) << " " << *it << endl;
-    }
-    else
-    {
-        cout << "not found" << endl;
+        cout << (auBinarySearch(begin(v), end(v), x) ? "yes" : "no") << endl;
     }
 }
 int main()
 {
-    // p01();
+    //p01();
     //p02();
-    //p06();
     //p03();
+    //p04();
+    //p06();
     //p07();
     //p08();
     //p09();
-    p04();
+    p10();
 }
