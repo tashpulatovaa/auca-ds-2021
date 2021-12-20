@@ -3,6 +3,7 @@
 #include <iterator>
 #include <vector>
 #include <utility>
+#include <tuple>
 
 #include "../au/algol.hpp"
 
@@ -177,7 +178,6 @@ void p07()
         cout << s.mName << " " << s.mGpa << "\n";
     }
 }
-
 void p08()
 {
     vector<pair<string, double>> students;
@@ -197,7 +197,50 @@ void p08()
         cout << s.first << " " << s.second << "\n";
     }
 }
+void p09()
+{
+    using Employee = tuple<string, int, double>;
+    vector<Employee> employees;
 
+    string name;
+    int age;
+    double salary;
+
+    while (cin >> name >> age >> salary)
+    {
+        employees.emplace_back(name, age, salary);
+    }
+
+    sort(begin(employees), end(employees), [](Employee e1, Employee e2)
+         { return get<1>(e1) < get<1>(e2); });
+
+    for (auto &e : employees)
+    {
+        cout << get<0>(e) << " " << get<1>(e) << " " << get<2>(e) << "\n";
+    }
+}
+void p04()
+{
+    vector<int> v;
+
+    int x;
+    while (cin >> x)
+    {
+        v.push_back(x);
+    }
+    //auto it = min_element(begin(v), end(v));
+    auto it = auMinElement(begin(v), end(v));
+
+    if (it != end(v))
+    {
+        cout << "The positin of the min element in vector "
+             << " is " << it - begin(v) << " " << *it << endl;
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+}
 int main()
 {
     // p01();
@@ -205,5 +248,7 @@ int main()
     //p06();
     //p03();
     //p07();
-    p08();
+    //p08();
+    //p09();
+    p04();
 }

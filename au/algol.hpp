@@ -59,3 +59,21 @@ ForwardIter auFindIf(ForwardIter beg, ForwardIter end, UnaryPredicate condition)
     }
     return beg;
 }
+
+template <typename ForwardIter>
+ForwardIter auMinElement(ForwardIter beg, ForwardIter end)
+{
+    int min = *beg;
+    ForwardIter it = beg;
+    while (beg != end)
+    {
+        if (*beg < min)
+        {
+            min = *beg;
+            it = beg;
+        }
+        ++beg;
+    }
+
+    return it;
+}
