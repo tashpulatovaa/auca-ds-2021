@@ -35,6 +35,24 @@ void reverse(int *beg, int *end)
     }
 }
 
+void p01()
+{
+    printf("The size of array: ");
+    int n;
+    scanf("%d", &n);
+
+    struct VecInt v;
+    VecInt_createOfSize(&v, n, 0);
+
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &v.data[i]);
+    }
+
+    reverse(v.data, v.data + n);
+    printArray(v.data, v.data + n);
+}
+
 void p02()
 {
     struct VecInt v;
@@ -53,5 +71,5 @@ void p02()
 
 int main(void)
 {
-    p02();
+    p01();
 }

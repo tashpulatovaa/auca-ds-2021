@@ -1,11 +1,27 @@
 #include "VecInt.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void VecInt_createEmpty(struct VecInt *self)
 {
     self->data = NULL;
     self->sz = 0;
     self->cp = 0;
+}
+void VecInt_createOfSize(struct VecInt *self, size_t size, int initValue)
+{
+    self->data = (int *)malloc(sizeof(int) * size);
+    if (self->data == NULL)
+    {
+        printf("VecInt: memory error\n");
+        exit(1);
+    }
+    self->sz = size;
+    self->cp = size;
+    for (size_t i = 0; i < self->sz; ++i)
+    {
+        self->data[i] = initValue;
+    }
 }
 
 void VecInt_pushBack(struct VecInt *self, int x)

@@ -13,5 +13,6 @@ struct VecInt
 void VecInt_createEmpty(struct VecInt *self);
 void VecInt_pushBack(struct VecInt *self, int x);
 void VecInt_destroy(struct VecInt *self);
+void VecInt_createOfSize(struct VecInt *self, size_t size, int initValue);
 
 #endif
