@@ -252,6 +252,26 @@ void p10()
         cout << (auBinarySearch(begin(v), end(v), x) ? "yes" : "no") << endl;
     }
 }
+void p11()
+{
+    vector<int> v = {0, 4, 5, 10, 12, 20, 25, 40};
+    for (int x; cin >> x;)
+    {
+        auto it = lower_bound(begin(v), end(v), x);
+        if (it == end(v))
+        {
+            cout << "No such element\n";
+        }
+        else if (*it == x)
+        {
+            cout << "The index of the elemnent is " << it - begin(v) << endl;
+        }
+        else if (*it > x)
+        {
+            cout << "The index of the first element that is greater than x is  " << it - begin(v) << endl;
+        }
+    }
+}
 int main()
 {
     //p01();
@@ -262,5 +282,6 @@ int main()
     //p07();
     //p08();
     //p09();
-    p10();
+    //p10();
+    p11();
 }
