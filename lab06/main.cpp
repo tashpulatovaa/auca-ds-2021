@@ -272,6 +272,16 @@ void p11()
         }
     }
 }
+void p12()
+{
+    vector<int> v = {0, 0, 4, 5, 10, 10, 10, 12, 20, 25, 35, 25, 25, 40};
+    for (int x; cin >> x;)
+    {
+        auto p = equal_range(begin(v), end(v), x);
+
+        cout << "The number of occurences of " << x << " is " << p.second - p.first << endl;
+    }
+}
 int main()
 {
     //p01();
@@ -283,5 +293,6 @@ int main()
     //p08();
     //p09();
     //p10();
-    p11();
+    //p11();
+    p12();
 }
