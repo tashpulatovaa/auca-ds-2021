@@ -7,6 +7,16 @@
 
 using namespace std;
 
+struct Student
+{
+    string mName;
+    double mGpa;
+    Student(const string &name, double gpa)
+        : mName(name), mGpa(gpa)
+    {
+    }
+};
+
 struct IsEven
 {
     bool operator()(int number)
@@ -61,9 +71,40 @@ void p02()
         cout << "-1 not found" << endl;
     }
 }
+void p06()
+{
+    vector<Student> students;
+
+    string name;
+    double gpa;
+
+    while ((cin >> name >> gpa))
+    {
+        students.emplace_back(name, gpa);
+    }
+
+    sort(begin(students), end(students), [](Student s1, Student s2)
+         { return s1.mName < s2.mName; });
+
+    for (auto s : students)
+    {
+        cout << s.mName << " " << s.mGpa << "\n";
+    }
+
+    cout << "------------------\n";
+
+    sort(begin(students), end(students), [](Student s1, Student s2)
+         { return s1.mGpa < s2.mGpa; });
+
+    for (auto s : students)
+    {
+        cout << s.mName << " " << s.mGpa << "\n";
+    }
+}
 
 int main()
 {
     // p01();
-    p02();
+    //p02();
+    p06();
 }
