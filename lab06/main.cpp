@@ -137,11 +137,51 @@ void p06()
         cout << s.mName << " " << s.mGpa << "\n";
     }
 }
+void p07()
+{
+    vector<Student> students = {{"StudentD", 4.0},
+                                {"StudentA", 4.0},
+                                {"SudentW", 3.9},
+                                {"StudentX", 4.0},
+                                {"StudentE", 3.0},
+                                {"StudentZ", 4.0},
+                                {"StudentY", 4.0}};
+
+    cout << "-----Regular sort-----\n";
+
+    sort(begin(students), end(students), [](Student s1, Student s2)
+         { return s1.mName < s2.mName; });
+
+    for (auto s : students)
+    {
+        cout << s.mName << " " << s.mGpa << "\n";
+    }
+
+    cout << "-----Sort by GPA-----\n";
+    sort(begin(students), end(students), [](Student s1, Student s2)
+         { return s1.mGpa < s2.mGpa; });
+
+    for (auto s : students)
+    {
+        cout << s.mName << " " << s.mGpa << "\n";
+    }
+
+    cout << "-----Stable sort-----\n";
+
+    stable_sort(begin(students), end(students), [](Student s1, Student s2)
+                { return s1.mName < s2.mName; });
+
+    for (auto s : students)
+    {
+        cout << s.mName << " " << s.mGpa << "\n";
+    }
+}
 
 int main()
 {
     // p01();
     //p02();
     //p06();
-    p03();
+    //p03();
+    p07();
 }
