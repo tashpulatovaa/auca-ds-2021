@@ -7,7 +7,15 @@
 
 using namespace std;
 
-void p0101()
+struct IsEven
+{
+    bool operator()(int number)
+    {
+        return (number) % 2 == 0;
+    }
+};
+
+void p01()
 {
     int a[] = {3, 1, 20, 4, 7, 0, 5};
     vector<int> v = {3, 1, 20, 4, 7, 0, 5};
@@ -33,7 +41,29 @@ void p0101()
     }
 }
 
+void p02()
+{
+    IsEven functor;
+    vector<int> v = {3, 1, 20, 4, 7, 0, 5};
+    //auto it = find_if(begin(v), end(v), functor);
+    //auto it = find_if(begin(v), end(v), IsEven());
+    // auto it = find_if(begin(v), end(v), [](int a)
+    //                   { return a % 2 == 0; });
+
+    auto it = auFindIf(begin(v), end(v), functor);
+
+    if (it != end(v))
+    {
+        cout << "The positin of first even number in the vector is " << it - begin(v) << endl;
+    }
+    else
+    {
+        cout << "-1 not found" << endl;
+    }
+}
+
 int main()
 {
-    p0101();
+    // p01();
+    p02();
 }

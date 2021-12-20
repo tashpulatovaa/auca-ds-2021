@@ -44,3 +44,18 @@ ForwardIter auFind(ForwardIter beg, ForwardIter end, const Key &key)
 
     return beg;
 }
+
+template <typename ForwardIter, typename Predicate>
+ForwardIter auFindIf(ForwardIter beg, ForwardIter end, Predicate condition)
+{
+    while (beg != end)
+    {
+        if (condition(*beg))
+        {
+            return beg;
+        }
+
+        ++beg;
+    }
+    return beg;
+}
