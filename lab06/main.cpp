@@ -25,6 +25,21 @@ struct IsEven
     }
 };
 
+struct GreaterThan
+{
+    int mData;
+
+    GreaterThan(int data)
+        : mData(data)
+    {
+    }
+
+    bool operator()(int number)
+    {
+        return (number > mData);
+    }
+};
+
 void p01()
 {
     int a[] = {3, 1, 20, 4, 7, 0, 5};
@@ -71,6 +86,27 @@ void p02()
         cout << "-1 not found" << endl;
     }
 }
+void p03()
+{
+    int x;
+
+    cout << "x = ";
+    cin >> x;
+
+    vector<int> v = {3, 1, 20, 4, 7, 0, 5};
+    //auto it = find_if(begin(v), end(v), GreaterThan(x));
+    auto it = find_if(begin(v), end(v), [x](int n)
+                      { return x < n; });
+
+    if (it != end(v))
+    {
+        cout << "The positin of first number greater than " << x << " is " << it - begin(v) << " " << *it << endl;
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+}
 void p06()
 {
     vector<Student> students;
@@ -106,5 +142,6 @@ int main()
 {
     // p01();
     //p02();
-    p06();
+    //p06();
+    p03();
 }
