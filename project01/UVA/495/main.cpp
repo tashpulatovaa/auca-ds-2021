@@ -653,18 +653,21 @@ int main()
 {
     iostream::sync_with_stdio(false);
 
-    for (int n; cin >> n;)
+    BigInt fib[5001];
+
+    int i = 0, n = 0;
+
+    fib[0] = 0;
+    fib[1] = 1;
+
+    for (int i = 2; i < 5001; i++)
     {
-        BigInt n3 = 0;
-        BigInt n1 = 0, n2 = 1;
 
-        for (int i = 0; i < n - 1; i++)
-        {
-            n3 = n1 + n2;
-            n1 = n2;
-            n2 = n3;
-        }
-
-        cout << "The Fibonacci number for " << n << " is " << n2 << endl;
+        fib[i] = fib[i - 1] + fib[i - 2];
+        //cout << fib[i] << endl;
+    }
+    while (cin >> n)
+    {
+        cout << "The Fibonacci number for " << n << " is " << fib[n] << endl;
     }
 }
