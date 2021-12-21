@@ -194,7 +194,7 @@ class BigInt
                 }
                 i++;
                 count++;
-                if (count > (int)y.mDigits.size())
+                if ((count >= (int)y.mDigits.size() && (count >= 2)))
                 {
                     r.mDigits.push_back(0);
                 }
@@ -219,10 +219,14 @@ class BigInt
                 divident.mDigits.clear();
             }
         }
-        if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
+        while (r.mDigits.front() == 0 && r.mDigits.size() != 1)
         {
             r.mDigits.erase(r.mDigits.begin(), r.mDigits.begin() + 1);
         }
+        // if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
+        // {
+        //     r.mDigits.erase(r.mDigits.begin(), r.mDigits.begin() + 1);
+        // }
         return std::make_pair(r, quotientRemainder.second);
     }
 
@@ -251,31 +255,6 @@ class BigInt
         }
 
         return {r, remeinder};
-
-        // BINARY_SEARCH APPROACH
-
-        // int r = 5;
-        // int remainder;
-        // bool increses = (divisor * 5 > divident) ? false : true;
-
-        // for (; (r > 0 && r < 10);)
-        // {
-        //     (increses) ? r++ : r--;
-
-        //     if (divisor * 5 == divident)
-        //     {
-        //         return {5, BigInt()};
-        //     }
-        //     if (r < 5 && divisor * r <= divident)
-        //     {
-        //         return {r, divident - divisor * r};
-        //     }
-        //     if (r > 5 && (divisor * r >= divident))
-        //     {
-        //         return {(r - 1), (divident - divisor * r)};
-        //     }
-        // }
-        // return {0, BigInt()};
     }
 
     static int cmpAbsValues(const BigInt &a, const BigInt &b)

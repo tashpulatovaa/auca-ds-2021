@@ -682,24 +682,25 @@ TEST_CASE("BigInt: '/' operator ")
         REQUIRE_THROWS_AS(x / y, runtime_error);
     }
 
-    // SUBCASE("Case 4: [-500, 500]")
-    // {
-    //     for (int i = -500; i < 500; i++)
-    //     {
-    //         for (int j = -500; j < 500; j++)
-    //         {
-    //             if (j == 0)
-    //             {
-    //                 continue;
-    //             }
-    //             BigInt x(i);
-    //             BigInt y(j);
-    //             ostringstream sout2;
-    //             sout2 << x / y;
-    //             REQUIRE(sout2.str() == to_string(i / j));
-    //         }
-    //     }
-    // }
+    SUBCASE("Case 4: [-500, 500]")
+    {
+        for (int i = -500; i < 500; i++)
+        {
+            for (int j = -500; j < 500; j++)
+            {
+                if (j == 0)
+                {
+                    continue;
+                }
+                BigInt x(i);
+                BigInt y(j);
+                ostringstream sout2;
+                cout << i << " " << j << "\n";
+                sout2 << x / y;
+                REQUIRE(sout2.str() == to_string(i / j));
+            }
+        }
+    }
 }
 
 // TEST_CASE("BigInt: '%' operator ")

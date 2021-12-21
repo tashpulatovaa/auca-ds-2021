@@ -7,10 +7,11 @@ using namespace std;
 #ifndef BIGINT_HPP
 #define BIGINT_HPP
 
-// #include <vector>
-// #include <iosfwd>
-// #include <string>
-// #include <stdexcept>
+#include <vector>
+#include <iosfwd>
+#include <string>
+#include <stdexcept>
+#include <cctype>
 
 #define BASE 10
 
@@ -199,7 +200,7 @@ class BigInt
                 }
                 i++;
                 count++;
-                if (count >= (int)y.mDigits.size() && (count >= 2))
+                if ((count >= (int)y.mDigits.size() && (count >= 2)))
                 {
                     r.mDigits.push_back(0);
                 }
@@ -224,10 +225,14 @@ class BigInt
                 divident.mDigits.clear();
             }
         }
-        if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
+        while (r.mDigits.front() == 0 && r.mDigits.size() != 1)
         {
             r.mDigits.erase(r.mDigits.begin(), r.mDigits.begin() + 1);
         }
+        // if (r.mDigits.front() == 0 && r.mDigits.size() != 1)
+        // {
+        //     r.mDigits.erase(r.mDigits.begin(), r.mDigits.begin() + 1);
+        // }
         return std::make_pair(r, quotientRemainder.second);
     }
 
@@ -256,31 +261,6 @@ class BigInt
         }
 
         return {r, remeinder};
-
-        // BINARY_SEARCH APPROACH
-
-        // int r = 5;
-        // int remainder;
-        // bool increses = (divisor * 5 > divident) ? false : true;
-
-        // for (; (r > 0 && r < 10);)
-        // {
-        //     (increses) ? r++ : r--;
-
-        //     if (divisor * 5 == divident)
-        //     {
-        //         return {5, BigInt()};
-        //     }
-        //     if (r < 5 && divisor * r <= divident)
-        //     {
-        //         return {r, divident - divisor * r};
-        //     }
-        //     if (r > 5 && (divisor * r >= divident))
-        //     {
-        //         return {(r - 1), (divident - divisor * r)};
-        //     }
-        // }
-        // return {0, BigInt()};
     }
 
     static int cmpAbsValues(const BigInt &a, const BigInt &b)
@@ -656,13 +636,13 @@ int main()
     int bill = 0;
     bool first = true;
 
-    while ((cin >> ibill >> friends) && ((ibill != 0) && (friends != 0)))
+    while ((cin >> ibill >> friends))
     {
-        if (!first)
-        {
-            cout << endl;
-        }
         bill++;
+        if ((ibill == 0) && (friends == 0))
+        {
+            break;
+        }
         BigInt sum;
         for (int i = 0; i < ibill; i++)
         {
@@ -672,6 +652,6 @@ int main()
             sum += x;
         }
         cout << "Bill #" << bill << " costs " << sum << ": each friend should pay " << (sum / friends) << "\n";
-        first = false;
+        cout << endl;
     }
 }
