@@ -130,6 +130,41 @@ void p04()
         cout << "not found" << endl;
     }
 }
+void p05()
+{
+    vector<Student> students;
+    string name;
+    double gpa;
+
+    while (cin >> name >> gpa)
+    {
+        students.emplace_back(name, gpa);
+    }
+    cout << "-------------------------\n";
+    auto it = auMinElement(begin(students), end(students), [](Student s1, Student s2)
+                           { return s1.mGpa < s2.mGpa; });
+
+    if (it != end(students))
+    {
+        cout << it->mName << " " << it->mGpa << endl;
+    }
+    else
+    {
+        cout << "Not found" << endl;
+    }
+
+    auto it2 = auMinElement(begin(students), end(students), [](Student s1, Student s2)
+                            { return s1.mName < s2.mName; });
+
+    if (it2 != end(students))
+    {
+        cout << it2->mName << " " << it2->mGpa << endl;
+    }
+    else
+    {
+        cout << "Not found" << endl;
+    }
+}
 void p06()
 {
     vector<Student> students;
@@ -288,11 +323,12 @@ int main()
     //p02();
     //p03();
     //p04();
+    //p05();
     //p06();
     //p07();
     //p08();
     //p09();
     //p10();
     //p11();
-    p12();
+    //p12();
 }

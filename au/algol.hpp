@@ -78,6 +78,26 @@ ForwardIter auMinElement(ForwardIter beg, ForwardIter end)
     return it;
 }
 
+template <typename ForwardIter, typename Comp>
+ForwardIter auMinElement(ForwardIter beg, ForwardIter end, Comp cmp)
+{
+    if (beg == end)
+    {
+        return end;
+    }
+    ForwardIter it = beg;
+    ++beg;
+    while (beg != end)
+    {
+        if (cmp(*beg, *it))
+        {
+            it = beg;
+        }
+        ++beg;
+    }
+    return it;
+}
+
 template <class ForwardIterator, class T>
 bool auBinarySearch(ForwardIterator first, ForwardIterator last, const T &val)
 {
