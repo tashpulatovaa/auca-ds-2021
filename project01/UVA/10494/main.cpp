@@ -1,3 +1,7 @@
+#include <bits/stdc++.h>
+
+template <typename C>
+int sz(const C &c) { return static_cast<int>(c.size()); }
 #ifndef BIGINT_HPP
 #define BIGINT_HPP
 
@@ -199,10 +203,6 @@ class BigInt
                 {
                     r.mDigits.push_back(0);
                 }
-                // if ((count >= (int)y.mDigits.size() && (count >= 2)))
-                // {
-                //     r.mDigits.push_back(0);
-                // }
             }
             if (divident == BigInt("0") || divident.mDigits.empty())
             {
@@ -627,3 +627,32 @@ BigInt abs(const BigInt x)
 }
 
 #endif
+
+using namespace std;
+
+int main()
+{
+    iostream::sync_with_stdio(false);
+
+    string a, b;
+    string operant;
+
+    while (cin >> a >> operant >> b)
+    {
+        cin.ignore();
+        BigInt x(a);
+        BigInt y(b);
+
+        auto it1 = find(begin(operant), end(operant), '/');
+        auto it2 = find(begin(operant), end(operant), '%');
+
+        if (it1 != end(operant))
+        {
+            cout << (x / y) << endl;
+        }
+        else if (it2 != end(operant))
+        {
+            cout << (x % y) << endl;
+        }
+    }
+}
