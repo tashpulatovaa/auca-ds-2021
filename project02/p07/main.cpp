@@ -5,45 +5,107 @@ int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
 
-struct Team
+struct Submission
 {
-    int nMembers;
-    vector<vector<Submission>> members;
+    int mContestant;
+    int mProblem;
+    int mTime;
+    char mResult;
 
-    void parse(stringstream &s)
+    Submission(const string &s)
     {
-        int id;
-        cin >> id;
-        //members[id]
+        istringstream sinp(s);
+        sinp >> mContestant >> mProblem >> mTime >> mResult;
     }
 };
 
-struct Submission
+using Problem = pair<bool, int>;
+
+struct Contestant
 {
-    int participantId;
-    int problemId;
-    int time;
-    char result;
+    int mNumber;
+    int mNumberOfSolvedProblems;
+    int mPenaltyTime;
+    bool mHadAtLeastOneSubmission;
+    vector<Problem> mProblems;
+
+    Contestant(int number)
+        : mNumber(number), mNumberOfSolvedProblems(0), mPenaltyTime(0), mHadAtLeastOneSubmission(false), mProblems(9)
+    {
+    }
+
+    void processSubmission(const Submission s)
+    {
+        mHadAtLeastOneSubmission = true;
+
+        if (mProblems[s.mProblem - 1].first)
+        {
+            return;
+        }
+
+        if (s.mResult == 'C')
+        {
+            ++mNumberOfSolvedProblems;
+            mProblems[s.mProblem - 1].first = true;
+            mPenaltyTime += s.mTime + mProblems[s.mProblem - 1].second;
+        }
+        else if (s.mResult == 'I')
+        {
+            mProblems[s.mProblem - 1].second += 20;
+        }
+    }
+};
+
+struct CmpContestants
+{
+    bool operator()(const Contestant &c1, const Contestant &c2) const
+    {
+        if (c1.mNumberOfSolvedProblems != c2.mNumberOfSolvedProblems)
+        {
+            return c1.mNumberOfSolvedProblems > c2.mNumberOfSolvedProblems;
+        }
+        if (c1.mPenaltyTime != c2.mPenaltyTime)
+        {
+            return c1.mPenaltyTime < c2.mPenaltyTime;
+        }
+        return c1.mNumber < c2.mNumber;
+    }
 };
 
 int main()
 {
     iostream::sync_with_stdio(false);
 
-    int cases;
-    cin >> cases;
-    string g;
-    getline(cin, g);
-    //  cin.ignore(100, '\n');
+    int nTests;
+    cin >> nTests >> ws;
 
-    for (int test = 0; test < cases; test++)
+    for (int test = 0; test < nTests; ++test)
     {
-        string s;
-        while (getline(cin, s) && s != "")
+        vector<Contestant> contestants;
+        for (int i = 1; i <= 100; ++i)
         {
-            stringstream sin(s);
-            Team team;
-            team.parse(sin);
+            contestants.emplace_back(i);
+        }
+
+        for (string line; getline(cin, line) && !line.empty();)
+        {
+            Submission subm(line);
+            contestants[subm.mContestant - 1].processSubmission(subm);
+        }
+
+        sort(begin(contestants), end(contestants), CmpContestants());
+
+        if (test != 0)
+        {
+            cout << "\n";
+        }
+
+        for (const auto &c : contestants)
+        {
+            if (c.mHadAtLeastOneSubmission)
+            {
+                cout << c.mNumber << " " << c.mNumberOfSolvedProblems << " " << c.mPenaltyTime << "\n";
+            }
         }
     }
 }
