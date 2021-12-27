@@ -1,138 +1,108 @@
 #include <bits/stdc++.h>
-
-template <typename C>
-int sz(const C &c) { return static_cast<int>(c.size()); }
-
 using namespace std;
+
+void case1(vector<int> in)
+{
+    sort(in.begin(), in.end());
+    for (auto i : in)
+    {
+        if (binary_search(in.begin(), in.end(), 7777 - i))
+        {
+            cout << "Yes\n";
+            return;
+        }
+    }
+    cout << "No\n";
+}
+
+void case2(vector<int> in)
+{
+    sort(in.begin(), in.end());
+    auto it = unique(in.begin(), in.end());
+    if (it != in.end())
+    {
+        cout << "Contains duplicate\n";
+    }
+    else
+    {
+        cout << "Unique\n";
+    }
+}
+
+void case3(vector<int> &in)
+{
+    int n = in.size() / 2;
+    sort(in.begin(), in.end());
+    for (auto i : in)
+    {
+        auto lower = lower_bound(in.begin(), in.end(), i);
+        auto upper = upper_bound(in.begin(), in.end(), i);
+        if (distance(lower, upper) > n)
+        {
+            cout << i << "\n";
+            return;
+        }
+    }
+    cout << -1 << "\n";
+}
+
+void case4(vector<int> in)
+{
+    sort(in.begin(), in.end());
+    if (in.size() % 2 == 1)
+    {
+        cout << in.at(in.size() / 2);
+    }
+    else
+    {
+        cout << in.at(in.size() / 2 - 1) << " " << in.at(in.size() / 2);
+    }
+    cout << "\n";
+}
+
+void case5(vector<int> in)
+{
+    sort(in.begin(), in.end());
+    auto lower = lower_bound(in.begin(), in.end(), 100);
+    auto upper = upper_bound(in.begin(), in.end(), 999);
+    for (; lower < upper; ++lower)
+    {
+        cout << *lower;
+        if (lower != upper - 1)
+        {
+            cout << " ";
+        }
+    }
+}
 
 int main()
 {
     iostream::sync_with_stdio(false);
-
     int n, command;
     cin >> n >> command;
-
-    vector<int> numbers(n);
-    for (int i = 0; i < n; i++)
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i)
     {
-        cin >> numbers[i];
+        cin >> a.at(i);
     }
-
-    //sort(begin(numbers), end(numbers));
-
-    switch (command)
+    if (command == 1)
     {
-    case 1:
-    {
-        bool have = false;
-        for (int i = 0; i < n - 1; i++)
-        {
-            for (int j = i + 1; j < n; j++)
-            {
-                if (numbers[i] + numbers[j] == 7777)
-                {
-                    have = true;
-                    break;
-                }
-            }
-        }
-        if (have)
-        {
-            cout << "Yes" << endl;
-        }
-        else
-        {
-            cout << "No" << endl;
-        }
-        break;
+        case1(a);
     }
-
-    case 2:
+    if (command == 2)
     {
-        sort(begin(numbers), end(numbers));
-        std::set<int> s(begin(numbers), end(numbers));
-        // const bool hasDuplicates = std::adjacent_find(numbers.begin(), numbers.end()) != numbers.end();
-        const bool hasDuplicates = (s.size() == numbers.size()) ? false : true;
-
-        if (!hasDuplicates)
-        {
-            cout << "Unique" << endl;
-        }
-        else
-        {
-            cout << "Contains duplicate" << endl;
-        }
-        break;
+        case2(a);
     }
-
-    case 3:
+    if (command == 3)
     {
-        sort(begin(numbers), end(numbers));
-
-        bool h = false;
-        auto t1 = begin(numbers);
-        auto t2 = begin(numbers);
-
-        for (int i = 0; i < n; i++)
-        {
-            if (i > 0)
-            {
-                if (numbers[i] == numbers[i - 1])
-                {
-                    continue;
-                }
-            }
-            auto p = equal_range(begin(numbers), end(numbers), numbers[i]);
-            if ((p.second - p.first) > n / 2)
-            {
-                h = true;
-                break;
-            }
-            // t1 = lower_bound(begin(numbers), end(numbers), numbers[i]);
-            // t2 = upper_bound(begin(numbers), end(numbers), numbers[i]);
-            // if ((t2 - t1) > n / 2)
-            // {
-            //     h = true;
-            //     break;
-            // }
-        }
-        cout << (h) ? *t1 : -1;
-        cout << endl;
-        break;
+        case3(a);
     }
-
-    case 4:
+    if (command == 4)
     {
-        if (n % 2 == 0)
-        {
-            cout << numbers[n / 2 - 1] << " " << numbers[n / 2] << endl;
-        }
-        else
-        {
-            cout << numbers[n / 2 + 1] << endl;
-        }
-        break;
+        case4(a);
     }
-
-    case 5:
+    if (command == 5)
     {
-        sort(begin(numbers), end(numbers));
-        bool first = true;
-        auto t1 = lower_bound(begin(numbers), end(numbers), 100);
-        auto t2 = upper_bound(begin(numbers), end(numbers), 999);
-        bool f = true;
-        while (t1 != t2)
-        {
-            if (!f)
-            {
-                cout << " ";
-            }
-            cout << *t1;
-            t1++;
-            f = false;
-        }
-        cout << endl;
-        break;
-    }
+        case5(a);
     }
 }
