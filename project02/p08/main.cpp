@@ -18,7 +18,7 @@ int main()
         cin >> numbers[i];
     }
 
-    sort(begin(numbers), end(numbers));
+    //sort(begin(numbers), end(numbers));
 
     switch (command)
     {
@@ -49,7 +49,10 @@ int main()
 
     case 2:
     {
-        const bool hasDuplicates = std::adjacent_find(numbers.begin(), numbers.end()) != numbers.end();
+        sort(begin(numbers), end(numbers));
+        std::set<int> s(begin(numbers), end(numbers));
+        // const bool hasDuplicates = std::adjacent_find(numbers.begin(), numbers.end()) != numbers.end();
+        const bool hasDuplicates = (s.size() == numbers.size()) ? false : true;
 
         if (!hasDuplicates)
         {
@@ -64,6 +67,7 @@ int main()
 
     case 3:
     {
+        sort(begin(numbers), end(numbers));
 
         bool h = false;
         auto t1 = begin(numbers);
@@ -71,13 +75,26 @@ int main()
 
         for (int i = 0; i < n; i++)
         {
-            t1 = lower_bound(begin(numbers), end(numbers), numbers[i]);
-            t2 = upper_bound(begin(numbers), end(numbers), numbers[i]);
-            if ((t2 - t1) > n / 2)
+            if (i > 0)
+            {
+                if (numbers[i] == numbers[i - 1])
+                {
+                    continue;
+                }
+            }
+            auto p = equal_range(begin(numbers), end(numbers), numbers[i]);
+            if ((p.second - p.first) > n / 2)
             {
                 h = true;
                 break;
             }
+            // t1 = lower_bound(begin(numbers), end(numbers), numbers[i]);
+            // t2 = upper_bound(begin(numbers), end(numbers), numbers[i]);
+            // if ((t2 - t1) > n / 2)
+            // {
+            //     h = true;
+            //     break;
+            // }
         }
         cout << (h) ? *t1 : -1;
         cout << endl;
@@ -99,6 +116,7 @@ int main()
 
     case 5:
     {
+        sort(begin(numbers), end(numbers));
         bool first = true;
         auto t1 = lower_bound(begin(numbers), end(numbers), 100);
         auto t2 = upper_bound(begin(numbers), end(numbers), 999);
