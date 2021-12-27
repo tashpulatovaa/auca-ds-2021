@@ -1,56 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int maxlen(vector<string> a)
-{
-    int m = 0;
-    for (auto c : a)
-    {
-        if (c.size() > m)
-            m = c.size();
-    }
-    return m;
-}
-
 int main()
 {
-    vector<string> in;
-    for (string line; getline(cin, line);)
+    int n;
+    bool f = true;
+
+    while (cin >> n && n != 0)
     {
-        if (line.empty())
+        vector<string> names;
+
+        string name;
+        for (int i = 0; i < n; i++)
         {
-            sort(in.begin(), in.end(), [](string const &a, string const &b)
-                 {
-                     string t1 = a;
-                     string t2 = b;
-                     reverse(t1.begin(), t1.end());
-                     reverse(t2.begin(), t2.end());
-                     return t1 < t2;
-                 });
-            int m = maxlen(in);
-            for (int i = 0; i < in.size(); ++i)
-            {
-                cout << setw(m) << in.at(i) << "\n";
-            }
-            cout << "\n";
-            in.clear();
+            cin >> name;
+            names.emplace_back(name);
         }
-        else
+
+        stable_sort(begin(names), end(names), [](string const &n1, string const &n2)
+                    { return (n1.at(0) < n2.at(0)) || (n1.at(0) == n2.at(0) && n1.at(1) < n2.at(1)); });
+
+        if (!f)
         {
-            in.push_back(line);
+            cout << endl;
         }
-    }
-    sort(in.begin(), in.end(), [](string const &a, string const &b)
-         {
-             string t1 = a;
-             string t2 = b;
-             reverse(t1.begin(), t1.end());
-             reverse(t2.begin(), t2.end());
-             return t1 < t2;
-         });
-    int m = maxlen(in);
-    for (int i = 0; i < in.size(); ++i)
-    {
-        cout << setw(m) << in.at(i) << "\n";
+        for (auto &e : names)
+        {
+            cout << e << "\n";
+        }
+        f = false;
     }
 }
